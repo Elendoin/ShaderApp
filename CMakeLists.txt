@@ -16,6 +16,7 @@ set(PROJECT_SOURCES
     mainwindow.cpp
     mainwindow.h
     mainwindow.ui
+    shaderlistwindow.ui
     imagewidget.cpp
     imagewidget.h
 )
@@ -27,6 +28,9 @@ if(${QT_VERSION_MAJOR} GREATER_EQUAL 6)
         ${PROJECT_SOURCES}
         models/shadermodel.h
         shaderlistwindow.ui
+        shaderlistwindow.h
+        shaderlistwindow.cpp
+        models/shaderlistmodel.h
 
     )
 else()

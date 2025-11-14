@@ -7,8 +7,19 @@
 class ShaderModel
 {
 public:
-    QString name = "Shader";
-    QString vertexShaderSource = R"(
+    QString getName() {return m_name;}
+    QString getVertexShaderSource() {return m_vertexShaderSource;}
+    QString getFragemtnShaderSource() {return m_fragmentShaderSource;}
+    QImage getImage() {return m_image;}
+
+    void setName(const QString& name) {m_name = name;}
+    void setVertexShaderSource(const QString& source) {m_vertexShaderSource = source;}
+    void setFragmentShaderSource(const QString& source) {m_fragmentShaderSource = source;}
+    void setImage(const QImage& image) {m_image = image;}
+
+private:
+    QString m_name = "BaseShader";
+    QString m_vertexShaderSource = R"(
 #version 330 core
 layout(location = 0) in vec2 position;
 layout(location = 1) in vec2 texCoord;
@@ -19,7 +30,7 @@ void main() {
     vTexCoord = texCoord;
 }
 )";
-    QString fragmentShaderSource = R"(
+    QString m_fragmentShaderSource = R"(
 #version 330 core
 in vec2 vTexCoord;
 out vec4 fragColor;
@@ -29,7 +40,7 @@ void main() {
     fragColor = vec4(color.rgb, color.a);
 }
 )";
-    QImage image;
+    QImage m_image;
 };
 
 

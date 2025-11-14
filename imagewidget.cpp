@@ -11,10 +11,9 @@ void ImageWidget::setImage(const QImage &image)
     qDebug() << Qt::endl;
 }
 
-void ImageWidget::setFragmentShader(QString& fragmentShaderSource)
+void ImageWidget::setShaderModel(const ShaderModel& model)
 {
-    m_shaderModel.fragmentShaderSource = fragmentShaderSource;
-    updateShader();
+    m_shaderModel = model;
 }
 
 void ImageWidget::initializeGL()
@@ -58,9 +57,9 @@ void ImageWidget::resizeGL(int w, int h)
 void ImageWidget::updateShader()
 {
     m_program.removeAllShaders();
-    if(!m_program.addShaderFromSourceCode(QOpenGLShader::Vertex, m_shaderModel.vertexShaderSource))
+    if(!m_program.addShaderFromSourceCode(QOpenGLShader::Vertex, m_shaderModel.getVertexShaderSource()))
         qDebug() << "Error:" << m_program.log();
-    if(!m_program.addShaderFromSourceCode(QOpenGLShader::Fragment, m_shaderModel.fragmentShaderSource))
+    if(!m_program.addShaderFromSourceCode(QOpenGLShader::Fragment, m_shaderModel.getFragemtnShaderSource()))
         qDebug() << "Error:" << m_program.log();
     if(!m_program.link())
         qDebug() << "Error:" << m_program.log();
