@@ -30,7 +30,7 @@ if(${QT_VERSION_MAJOR} GREATER_EQUAL 6)
         shaderlistwindow.ui
         shaderlistwindow.h
         shaderlistwindow.cpp
-        models/shaderlistmodel.h
+
 
     )
 else()

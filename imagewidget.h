@@ -19,7 +19,8 @@ public:
     ~ImageWidget() = default;
 
     void setImage(const QImage &image);
-    void setShaderModel(const ShaderModel& model);
+    void setVertexShaderSource(const QString& source);
+    void setFragmentShaderSource(const QString& source);
 
 protected:
     void initializeGL() override;

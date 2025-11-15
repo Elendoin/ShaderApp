@@ -28,20 +28,38 @@ MainWindow::MainWindow(QWidget *parent)
         }
     });
 
-    QObject::connect(ui->selectShaderButton, &QPushButton::clicked, [this, imageWidget]()
+    QObject::connect(ui->selectFragmentShaderButton, &QPushButton::clicked, [this, imageWidget]()
     {
-        ShaderListWindow* win = new ShaderListWindow(this);
+        ShaderListWindow* win = new ShaderListWindow(ShaderListWindow::FRAGMENT, this);
         win->setWindowFlags(Qt::Window);
-        win->setWindowTitle("Shader selection");
+        win->setWindowTitle("Fragment shader selection");
         win->show();
 
         QObject::connect(win->getListWidget(), &QListWidget::itemDoubleClicked, [this, win, imageWidget](QListWidgetItem* item)
         {
             qDebug() << "Selected: " << item->text();
-            this->ui->shaderLabel->setText("Selected shader: " + item->text());
-            auto list = win->getListModel().getList();
+            this->ui->fragmentShaderLabel->setText("Selected Fragment Shader: " + item->text());
+            auto map = win->getShaderMap();
 
-            imageWidget->setShaderModel(list[win->getListWidget()->currentRow()]);
+            imageWidget->setFragmentShaderSource(map[item->text()]);
+            win->close();
+        });
+    });
+
+    QObject::connect(ui->selectVertexShaderButton, &QPushButton::clicked, [this, imageWidget]()
+    {
+        ShaderListWindow* win = new ShaderListWindow(ShaderListWindow::VERTEX, this);
+        win->setWindowFlags(Qt::Window);
+        win->setWindowTitle("Vertex shader selection");
+        win->show();
+
+        QObject::connect(win->getListWidget(), &QListWidget::itemDoubleClicked, [this, win, imageWidget](QListWidgetItem* item)
+        {
+            qDebug() << "Selected: " << item->text();
+            this->ui->vertexShaderLabel->setText("Selected Vertex Shader: " + item->text());
+            auto map = win->getShaderMap();
+
+            imageWidget->setVertexShaderSource(map[item->text()]);
             win->close();
         });
     });

@@ -1,24 +1,28 @@
 #include <shaderlistwindow.h>
+#include <models/shadermodel.h>
 #include <ui_shaderlistwindow.h>
 #include <QListWidgetItem>
 
-ShaderListWindow::ShaderListWindow(QWidget* parent)
+ShaderListWindow::ShaderListWindow(Mode mode, QWidget* parent)
     : QWidget(parent)
     , ui(new Ui::ShaderListWindow)
 {
     ui->setupUi(this);
 
     ShaderModel baseShaderModel;
-    auto& list = m_shaderListModel.getList();
-    list.push_back(baseShaderModel);
+    if(mode == Mode::VERTEX)
+        m_shaderMap["BaseVertexShader"] = baseShaderModel.getVertexShaderSource();
+    else if(mode == Mode::FRAGMENT)
+        m_shaderMap["BaseFragmentShader"] = baseShaderModel.getFragmentShaderSource();
 
-    for(auto model : list)
+
+    for(auto shader : m_shaderMap)
     {
-        QListWidgetItem* item = new QListWidgetItem(model.getName());
+        QListWidgetItem* item = new QListWidgetItem(shader.first);
         ui->listWidget->addItem(item);
     }
 }
 
 QListWidget* ShaderListWindow::getListWidget() { return ui->listWidget; }
-ShaderListModel ShaderListWindow::getListModel() { return m_shaderListModel; }
+std::map<QString, QString>& ShaderListWindow::getShaderMap() { return m_shaderMap; }
 ShaderListWindow::~ShaderListWindow() { delete ui; }

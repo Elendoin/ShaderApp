@@ -9,7 +9,7 @@ class ShaderModel
 public:
     QString getName() {return m_name;}
     QString getVertexShaderSource() {return m_vertexShaderSource;}
-    QString getFragemtnShaderSource() {return m_fragmentShaderSource;}
+    QString getFragmentShaderSource() {return m_fragmentShaderSource;}
     QImage getImage() {return m_image;}
 
     void setName(const QString& name) {m_name = name;}

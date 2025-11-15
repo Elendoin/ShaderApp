@@ -2,7 +2,6 @@
 #define SHADERLISTWINDOW_H
 
 #include <QWidget>
-#include <models/shaderlistmodel.h>
 #include <QListWidget>
 
 QT_BEGIN_NAMESPACE
@@ -15,13 +14,19 @@ class ShaderListWindow : public QWidget
 {
     Q_OBJECT
 public:
-    explicit ShaderListWindow(QWidget* parent = nullptr);
+    enum Mode
+    {
+        FRAGMENT,
+        VERTEX
+    };
+    explicit ShaderListWindow(Mode mode, QWidget* parent = nullptr);
     ~ShaderListWindow();
+    std::map<QString, QString>& getShaderMap();
     QListWidget* getListWidget();
-    ShaderListModel getListModel();
+
 private:
     Ui::ShaderListWindow *ui;
-    ShaderListModel m_shaderListModel;
+    std::map<QString, QString> m_shaderMap;
 };
 
 #endif // SHADERLISTWINDOW_H

@@ -18,7 +18,7 @@
     <item>
      <layout class="QHBoxLayout" name="horizontalLayout">
       <item>
-       <widget class="QPushButton" name="selectShaderButton">
+       <widget class="QPushButton" name="selectVertexShaderButton">
         <property name="sizePolicy">
          <sizepolicy hsizetype="Minimum" vsizetype="Fixed">
           <horstretch>1</horstretch>
@@ -26,7 +26,20 @@
          </sizepolicy>
         </property>
         <property name="text">
-         <string>Select Shader</string>
+         <string>Select Vertex Shader</string>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QPushButton" name="selectFragmentShaderButton">
+        <property name="sizePolicy">
+         <sizepolicy hsizetype="Minimum" vsizetype="Fixed">
+          <horstretch>1</horstretch>
+          <verstretch>0</verstretch>
+         </sizepolicy>
+        </property>
+        <property name="text">
+         <string>Select Fragment Shader</string>
         </property>
        </widget>
       </item>
@@ -52,14 +65,28 @@
      </layout>
     </item>
     <item>
-     <widget class="QLabel" name="shaderLabel">
-      <property name="text">
-       <string/>
-      </property>
-      <property name="alignment">
-       <set>Qt::AlignmentFlag::AlignCenter</set>
-      </property>
-     </widget>
+     <layout class="QHBoxLayout" name="horizontalLayout_2">
+      <item>
+       <widget class="QLabel" name="vertexShaderLabel">
+        <property name="text">
+         <string>Selected Vertex Shader: BaseVertexShader</string>
+        </property>
+        <property name="alignment">
+         <set>Qt::AlignmentFlag::AlignCenter</set>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QLabel" name="fragmentShaderLabel">
+        <property name="text">
+         <string>Selected Fragment Shader: BaseFragmentShader</string>
+        </property>
+        <property name="alignment">
+         <set>Qt::AlignmentFlag::AlignCenter</set>
+        </property>
+       </widget>
+      </item>
+     </layout>
     </item>
     <item>
      <layout class="QVBoxLayout" name="imageLayout">

@@ -8,12 +8,19 @@ void ImageWidget::setImage(const QImage &image)
     qDebug() << "Widget: (" << width() << ", " << height() << ")";
     qDebug() << "Image: (" << image.width() << ", " << image.height() << ")";
     qDebug() << "Scale: (" << (float)image.width()/width() << ", " << (float)image.height()/height() << ")";
+    qDebug() << "Vertex Shader Code: " << m_shaderModel.getVertexShaderSource();
+    qDebug() << "Fragment Shader Code: " << m_shaderModel.getFragmentShaderSource();
     qDebug() << Qt::endl;
 }
 
-void ImageWidget::setShaderModel(const ShaderModel& model)
+void ImageWidget::setVertexShaderSource(const QString& source)
 {
-    m_shaderModel = model;
+    m_shaderModel.setVertexShaderSource(source);
+}
+
+void ImageWidget::setFragmentShaderSource(const QString& source)
+{
+    m_shaderModel.setFragmentShaderSource(source);
 }
 
 void ImageWidget::initializeGL()
@@ -59,7 +66,7 @@ void ImageWidget::updateShader()
     m_program.removeAllShaders();
     if(!m_program.addShaderFromSourceCode(QOpenGLShader::Vertex, m_shaderModel.getVertexShaderSource()))
         qDebug() << "Error:" << m_program.log();
-    if(!m_program.addShaderFromSourceCode(QOpenGLShader::Fragment, m_shaderModel.getFragemtnShaderSource()))
+    if(!m_program.addShaderFromSourceCode(QOpenGLShader::Fragment, m_shaderModel.getFragmentShaderSource()))
         qDebug() << "Error:" << m_program.log();
     if(!m_program.link())
         qDebug() << "Error:" << m_program.log();
@@ -79,6 +86,7 @@ void ImageWidget::paintGL()
     float widthScale = std::clamp((float)m_image.width()/width(), 0.0f, 1.0f);
     float heightScale = std::clamp((float)m_image.height()/height(), 0.0f, 1.0f);
 
+    updateShader();
     // glEnable(GL_TEXTURE_2D);
     m_texture->bind();
     m_program.bind();
