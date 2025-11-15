@@ -30,6 +30,8 @@ if(${QT_VERSION_MAJOR} GREATER_EQUAL 6)
         shaderlistwindow.ui
         shaderlistwindow.h
         shaderlistwindow.cpp
+        utils/filehelper.h
+        utils/filehelper.cpp
 
 
     )
@@ -56,6 +58,24 @@ target_include_directories(App
 set_target_properties(App PROPERTIES
     MACOSX_BUNDLE TRUE
     WIN32_EXECUTABLE TRUE
+)
+
+add_custom_command(TARGET App POST_BUILD
+    # Clear old vertexshaders folder
+    COMMAND ${CMAKE_COMMAND} -E rm -rf
+            ${CMAKE_CURRENT_BINARY_DIR}/vertexshaders
+    # Copy fresh version
+    COMMAND ${CMAKE_COMMAND} -E copy_directory
+            ${CMAKE_SOURCE_DIR}/vertexshaders
+            ${CMAKE_CURRENT_BINARY_DIR}/vertexshaders
+
+    # Clear old fragmentshaders folder
+    COMMAND ${CMAKE_COMMAND} -E rm -rf
+            ${CMAKE_CURRENT_BINARY_DIR}/fragmentshaders
+    # Copy fresh version
+    COMMAND ${CMAKE_COMMAND} -E copy_directory
+            ${CMAKE_SOURCE_DIR}/fragmentshaders
+            ${CMAKE_CURRENT_BINARY_DIR}/fragmentshaders
 )
 
 if(QT_VERSION_MAJOR EQUAL 6)

@@ -16,11 +16,15 @@ void ImageWidget::setImage(const QImage &image)
 void ImageWidget::setVertexShaderSource(const QString& source)
 {
     m_shaderModel.setVertexShaderSource(source);
+    //TODO - change so it checks for context, also don't render shaders everytime
+    setImage(m_image);
 }
 
 void ImageWidget::setFragmentShaderSource(const QString& source)
 {
     m_shaderModel.setFragmentShaderSource(source);
+    //TODO - change so it checks for context, also don't render shaders everytime
+    setImage(m_image);
 }
 
 void ImageWidget::initializeGL()
