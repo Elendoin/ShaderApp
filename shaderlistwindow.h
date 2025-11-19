@@ -3,6 +3,7 @@
 
 #include <QWidget>
 #include <QListWidget>
+#include <QOpenGLShader>
 
 QT_BEGIN_NAMESPACE
 namespace Ui {
@@ -14,17 +15,14 @@ class ShaderListWindow : public QWidget
 {
     Q_OBJECT
 public:
-    enum Mode
-    {
-        FRAGMENT,
-        VERTEX
-    };
-    explicit ShaderListWindow(Mode mode, QWidget* parent = nullptr);
+    explicit ShaderListWindow(QOpenGLShader::ShaderType shaderType, QWidget* parent = nullptr);
     ~ShaderListWindow();
     std::map<QString, QString>& getShaderMap();
     QListWidget* getListWidget();
 
 private:
+    void modeBody(QOpenGLShader::ShaderType shaderType);
+    void reloadView();
     Ui::ShaderListWindow *ui;
     std::map<QString, QString> m_shaderMap;
 };

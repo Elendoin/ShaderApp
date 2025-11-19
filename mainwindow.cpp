@@ -5,6 +5,7 @@
 #include <QLayout>
 #include "imagewidget.h"
 #include <shaderlistwindow.h>
+#include <QOpenGLShader>
 
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent)
@@ -19,10 +20,10 @@ MainWindow::MainWindow(QWidget *parent)
 
     QObject::connect(ui->selectFileButton, &QPushButton::clicked, [this, imageWidget]()
     {
-        auto fileName = QFileDialog::getOpenFileName(this,tr("Open image file"), "", tr("Image (*.jpg *.png);;Image (*jpg);;Image (*png)"));
-        if (!fileName.isEmpty()) {
-            qDebug() << "Selected file:" << fileName;
-            image.load(fileName);
+        auto filePath = QFileDialog::getOpenFileName(this,tr("Open image file"), "", tr("Image (*.jpg *.png);;Image (*jpg);;Image (*png)"));
+        if (!filePath.isEmpty()) {
+            qDebug() << "Selected file:" << filePath;
+            image.load(filePath);
 
             imageWidget->setImage(image);
         }
@@ -30,7 +31,7 @@ MainWindow::MainWindow(QWidget *parent)
 
     QObject::connect(ui->selectFragmentShaderButton, &QPushButton::clicked, [this, imageWidget]()
     {
-        ShaderListWindow* win = new ShaderListWindow(ShaderListWindow::FRAGMENT, this);
+        ShaderListWindow* win = new ShaderListWindow(QOpenGLShader::Fragment, this);
         win->setWindowFlags(Qt::Window);
         win->setWindowTitle("Fragment shader selection");
         win->show();
@@ -48,7 +49,7 @@ MainWindow::MainWindow(QWidget *parent)
 
     QObject::connect(ui->selectVertexShaderButton, &QPushButton::clicked, [this, imageWidget]()
     {
-        ShaderListWindow* win = new ShaderListWindow(ShaderListWindow::VERTEX, this);
+        ShaderListWindow* win = new ShaderListWindow(QOpenGLShader::Vertex, this);
         win->setWindowFlags(Qt::Window);
         win->setWindowTitle("Vertex shader selection");
         win->show();
