@@ -17,7 +17,7 @@ QString FileHelper::readFile(const std::filesystem::path& path)
 
 void FileHelper::saveStringToFile(const QString& contents, const std::filesystem::path& path)
 {
-    QFile file(path);
+    QFile file(QString::fromStdString(path.string()));
     if(!file.open(QIODevice::WriteOnly | QIODevice::Text))
     {
         qDebug() << "File couldn't open!" << path.generic_string() << Qt::endl;
@@ -26,6 +26,7 @@ void FileHelper::saveStringToFile(const QString& contents, const std::filesystem
 
     QTextStream out(&file);
     out << contents;
+    out.flush();
 }
 
 QString FileHelper::getFileNameFromPath(const std::filesystem::path& path)

@@ -65,7 +65,7 @@ void ShaderListWindow::modeBody(QOpenGLShader::ShaderType shaderType)
             this->reloadView();
         }
     });
-    QObject::connect(ui->editShaderButton, &QPushButton::clicked, [this, finalPath, shaderType]()
+    QObject::connect(ui->editShaderButton, &QPushButton::clicked, [this, finalPath]()
     {
         //TODO: wonky
         QString program = "notepad.exe";
@@ -78,6 +78,16 @@ void ShaderListWindow::modeBody(QOpenGLShader::ShaderType shaderType)
         delete(process);
     });
 
+    QObject::connect(ui->newShaderButton, &QPushButton::clicked, [this, finalPath, shaderType, baseShaderModel]()
+    {
+        //TODO: insert source
+        auto newFileName = shaderType == QOpenGLShader::Fragment ? "NewFragmentShader" : "NewVertexShader";
+        qDebug() << finalPath;
+        auto path = fs::path(finalPath) / (std::string(newFileName) + ".txt");
+        FileHelper::saveStringToFile("", path);
+        this->m_shaderMap[newFileName] = "";
+        this->reloadView();
+    });
 
     for(const auto& entry: fs::directory_iterator(fs::current_path() / finalPath))
     {
