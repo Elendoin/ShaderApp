@@ -30,13 +30,15 @@ ShaderListWindow::ShaderListWindow(QOpenGLShader::ShaderType shaderType, QWidget
 void ShaderListWindow::modeBody(QOpenGLShader::ShaderType shaderType)
 {
     ShaderModel baseShaderModel;
+    auto baseFragmentShaderSource = baseShaderModel.getFragmentShaderSource();
+    auto baseVertexShaderSource = baseShaderModel.getVertexShaderSource();
     if(shaderType == QOpenGLShader::Vertex)
     {
-        m_shaderMap["BaseVertexShader"] = baseShaderModel.getVertexShaderSource();
+        m_shaderMap["BaseVertexShader"] = baseVertexShaderSource;
     }
     else if (shaderType == QOpenGLShader::Fragment)
     {
-        m_shaderMap["BaseFragmentShader"] = baseShaderModel.getFragmentShaderSource();
+        m_shaderMap["BaseFragmentShader"] = baseFragmentShaderSource;
     }
 
 
@@ -67,6 +69,10 @@ void ShaderListWindow::modeBody(QOpenGLShader::ShaderType shaderType)
     });
     QObject::connect(ui->editShaderButton, &QPushButton::clicked, [this, finalPath]()
     {
+        if(this->getListWidget()->currentItem() == nullptr)
+        {
+            return;
+        }
         //TODO: wonky
         QString program = "notepad.exe";
         QStringList arguments;
@@ -78,13 +84,29 @@ void ShaderListWindow::modeBody(QOpenGLShader::ShaderType shaderType)
         delete(process);
     });
 
-    QObject::connect(ui->newShaderButton, &QPushButton::clicked, [this, finalPath, shaderType, baseShaderModel]()
+    QObject::connect(ui->newShaderButton, &QPushButton::clicked, [this, finalPath, shaderType, baseFragmentShaderSource, baseVertexShaderSource]()
     {
-        //TODO: insert source
-        auto newFileName = shaderType == QOpenGLShader::Fragment ? "NewFragmentShader" : "NewVertexShader";
-        qDebug() << finalPath;
-        auto path = fs::path(finalPath) / (std::string(newFileName) + ".txt");
-        FileHelper::saveStringToFile("", path);
+
+        auto isFragment =  shaderType == QOpenGLShader::Fragment;
+        auto newFileName = isFragment ? QString("NewFragmentShader") : QString("NewVertexShader");
+
+        int newFileCount = 0;
+        for(auto entry : fs::directory_iterator(finalPath))
+        {
+            if(QString(entry.path().filename().c_str()).contains(newFileName))
+            {
+                newFileCount++;
+            }
+        }
+        if(newFileCount > 0)
+        {
+            auto suffix = "(" + QString::number(newFileCount) + ")";
+            newFileName = QString(newFileName) + suffix;
+        }
+
+
+        auto path = fs::path(finalPath) / (newFileName.toStdString() + ".txt");
+        FileHelper::saveStringToFile((isFragment ? baseFragmentShaderSource : baseVertexShaderSource), path);
         this->m_shaderMap[newFileName] = "";
         this->reloadView();
     });

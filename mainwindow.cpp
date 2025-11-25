@@ -6,6 +6,7 @@
 #include "imagewidget.h"
 #include <shaderlistwindow.h>
 #include <QOpenGLShader>
+#include <QImageWriter>
 
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent)
@@ -17,16 +18,36 @@ MainWindow::MainWindow(QWidget *parent)
     ImageWidget* imageWidget = new ImageWidget(this);
 
     ui->imageLayout->addWidget(imageWidget, 1);
+    ui->actionSaveFile->setDisabled(true);
 
-    QObject::connect(ui->selectFileButton, &QPushButton::clicked, [this, imageWidget]()
+    QObject::connect(ui->actionOpenFile, &QAction::triggered, [this, imageWidget]()
     {
-        auto filePath = QFileDialog::getOpenFileName(this,tr("Open image file"), "", tr("Image (*.jpg *.png);;Image (*jpg);;Image (*png)"));
+        auto filePath = QFileDialog::getOpenFileName(this,tr("Open image file"), "", tr("Image (*.jpg *.png, *jpeg);;Image (*jpg);;Image (*png)"));
         if (!filePath.isEmpty()) {
             qDebug() << "Selected file:" << filePath;
             image.load(filePath);
 
             imageWidget->setImage(image);
+            ui->actionSaveFile->setEnabled(true);
         }
+    });
+
+    QObject::connect(ui->actionSaveFile, &QAction::triggered, [this, imageWidget]()
+    {
+        auto filePath = QFileDialog::getSaveFileName(this,tr("Open image file"), "", tr("JPG (*.jpg);;JPEG (*.jpeg);;PNG (*.png)"));
+        QImage saveImage = imageWidget->renderToImage(imageWidget->getImage().width(), imageWidget->getImage().height());
+
+        QImageWriter writer(filePath);
+        bool ok = writer.write(saveImage);
+        if(!ok)
+        {
+            qWarning() << "Failed to save image!";
+        }
+    });
+
+    QObject::connect(ui->actionExit, &QAction::triggered, [this, imageWidget]()
+    {
+        exit(0);
     });
 
     QObject::connect(ui->selectFragmentShaderButton, &QPushButton::clicked, [this, imageWidget]()

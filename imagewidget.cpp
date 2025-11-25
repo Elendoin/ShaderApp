@@ -1,5 +1,10 @@
 #include "imagewidget.h"
+#include <QOpenGLFramebufferObject>
 
+QImage ImageWidget::getImage()
+{
+    return m_image;
+}
 
 void ImageWidget::setImage(const QImage &image)
 {
@@ -25,6 +30,41 @@ void ImageWidget::setFragmentShaderSource(const QString& source)
     m_shaderModel.setFragmentShaderSource(source);
     //TODO - change so it checks for context, also don't render shaders everytime
     setImage(m_image);
+}
+
+QImage ImageWidget::renderToImage(int width, int height)
+{
+    makeCurrent();
+
+    QOpenGLFramebufferObjectFormat format;
+    format.setAttachment(QOpenGLFramebufferObject::CombinedDepthStencil);
+    format.setTextureTarget(GL_TEXTURE_2D);
+    QOpenGLFramebufferObject fbo(width, height, format);
+
+    fbo.bind();
+
+    glViewport(0, 0, width, height);
+
+    updateShader();
+
+    m_texture->bind();
+    m_program.bind();
+
+    m_program.setUniformValue("textureSampler", 0);
+    m_program.setUniformValue("scale", QVector2D(1.0f, 1.0f)); // or compute your custom scaling
+
+    m_vao.bind();
+    glDrawArrays(GL_TRIANGLE_FAN, 0, 4);
+    m_vao.release();
+
+    m_texture->release();
+    m_program.release();
+
+    QImage result = fbo.toImage();
+    glBindFramebuffer(GL_FRAMEBUFFER, defaultFramebufferObject());
+
+    doneCurrent();
+    return result;
 }
 
 void ImageWidget::initializeGL()

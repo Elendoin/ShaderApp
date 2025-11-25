@@ -18,9 +18,11 @@ public:
     ImageWidget(QWidget *parent = nullptr) {}
     ~ImageWidget() = default;
 
+    QImage getImage();
     void setImage(const QImage &image);
     void setVertexShaderSource(const QString& source);
     void setFragmentShaderSource(const QString& source);
+    QImage renderToImage(int width, int height);
 
 protected:
     void initializeGL() override;
