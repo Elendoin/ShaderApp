@@ -2,6 +2,7 @@
 #define SHADERLISTWINDOW_H
 
 #include <QWidget>
+#include <QDialog>
 #include <QListWidget>
 #include <QOpenGLShader>
 
@@ -11,7 +12,7 @@ class ShaderListWindow;
 }
 QT_END_NAMESPACE
 
-class ShaderListWindow : public QWidget
+class ShaderListWindow : public QDialog
 {
     Q_OBJECT
 public:

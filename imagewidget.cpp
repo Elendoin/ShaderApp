@@ -51,7 +51,7 @@ QImage ImageWidget::renderToImage(int width, int height)
     m_program.bind();
 
     m_program.setUniformValue("textureSampler", 0);
-    m_program.setUniformValue("scale", QVector2D(1.0f, 1.0f)); // or compute your custom scaling
+    m_program.setUniformValue("scale", QVector2D(1.0f, 1.0f));
 
     m_vao.bind();
     glDrawArrays(GL_TRIANGLE_FAN, 0, 4);

@@ -11,7 +11,7 @@
 namespace fs = std::filesystem;
 
 ShaderListWindow::ShaderListWindow(QOpenGLShader::ShaderType shaderType, QWidget* parent)
-    : QWidget(parent)
+    : QDialog(parent)
     , ui(new Ui::ShaderListWindow)
 {
     if(shaderType != QOpenGLShader::Fragment && shaderType != QOpenGLShader::Vertex)
@@ -67,13 +67,30 @@ void ShaderListWindow::modeBody(QOpenGLShader::ShaderType shaderType)
             this->reloadView();
         }
     });
-    QObject::connect(ui->editShaderButton, &QPushButton::clicked, [this, finalPath]()
+    QObject::connect(ui->deleteShaderButton, &QPushButton::clicked, [this, finalPath]()
     {
-        if(this->getListWidget()->currentItem() == nullptr)
+        if(this->getListWidget()->currentItem() == nullptr) {return; }
+        if(this->getListWidget()->currentRow() == 0)
         {
+            QMessageBox messageBox;
+            messageBox.critical(0,"Delete failed","Cannot delete base shader model!");
             return;
         }
-        //TODO: wonky
+        fs::path path = fs::path(finalPath) / (this->getListWidget()->currentItem()->text() + ".txt").toStdString();
+        if(!fs::exists(path)) {return; }
+
+        fs::remove(path);
+        m_shaderMap.erase(getListWidget()->currentItem()->text());
+
+        this->reloadView();
+    });
+
+    QObject::connect(ui->editShaderButton, &QPushButton::clicked, [this, finalPath]()
+    {
+        if(this->getListWidget()->currentItem() == nullptr) {return; }
+        fs::path path = fs::path(finalPath) / (this->getListWidget()->currentItem()->text() + ".txt").toStdString();
+        if(!fs::exists(path)) {return; }
+
         QString program = "notepad.exe";
         QStringList arguments;
         arguments << QString::fromStdString((fs::path(finalPath) / (this->getListWidget()->currentItem()->text() + ".txt").toStdString()).generic_string());

@@ -53,9 +53,7 @@ MainWindow::MainWindow(QWidget *parent)
     QObject::connect(ui->selectFragmentShaderButton, &QPushButton::clicked, [this, imageWidget]()
     {
         ShaderListWindow* win = new ShaderListWindow(QOpenGLShader::Fragment, this);
-        win->setWindowFlags(Qt::Window);
         win->setWindowTitle("Fragment shader selection");
-        win->show();
 
         QObject::connect(win->getListWidget(), &QListWidget::itemDoubleClicked, [this, win, imageWidget](QListWidgetItem* item)
         {
@@ -64,16 +62,18 @@ MainWindow::MainWindow(QWidget *parent)
             auto map = win->getShaderMap();
 
             imageWidget->setFragmentShaderSource(map[item->text()]);
-            win->close();
+            win->accept();
         });
+
+        win->setWindowModality(Qt::WindowModal);
+        win->exec();
+        win->deleteLater();
     });
 
     QObject::connect(ui->selectVertexShaderButton, &QPushButton::clicked, [this, imageWidget]()
     {
         ShaderListWindow* win = new ShaderListWindow(QOpenGLShader::Vertex, this);
-        win->setWindowFlags(Qt::Window);
         win->setWindowTitle("Vertex shader selection");
-        win->show();
 
         QObject::connect(win->getListWidget(), &QListWidget::itemDoubleClicked, [this, win, imageWidget](QListWidgetItem* item)
         {
@@ -82,8 +82,12 @@ MainWindow::MainWindow(QWidget *parent)
             auto map = win->getShaderMap();
 
             imageWidget->setVertexShaderSource(map[item->text()]);
-            win->close();
+            win->accept();
         });
+
+        win->setWindowModality(Qt::WindowModal);
+        win->exec();
+        win->deleteLater();
     });
 }
 
