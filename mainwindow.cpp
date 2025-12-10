@@ -1,12 +1,13 @@
 #include "mainwindow.h"
 #include "./ui_mainwindow.h"
+#include "utils/filehelper.h"
 #include <QFileDialog>
 #include <QDebug>
 #include <QLayout>
-#include "imagewidget.h"
 #include <shaderlistwindow.h>
 #include <QOpenGLShader>
 #include <QImageWriter>
+namespace fs = std::filesystem;
 
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent)
@@ -20,16 +21,12 @@ MainWindow::MainWindow(QWidget *parent)
     ui->imageLayout->addWidget(imageWidget, 1);
     ui->actionSaveFile->setDisabled(true);
 
+    loadRecents(imageWidget);
+
     QObject::connect(ui->actionOpenFile, &QAction::triggered, [this, imageWidget]()
     {
         auto filePath = QFileDialog::getOpenFileName(this,tr("Open image file"), "", tr("Image (*.jpg *.png, *jpeg);;Image (*jpg);;Image (*png)"));
-        if (!filePath.isEmpty()) {
-            qDebug() << "Selected file:" << filePath;
-            image.load(filePath);
-
-            imageWidget->setImage(image);
-            ui->actionSaveFile->setEnabled(true);
-        }
+        loadImageToWidget(fs::path(filePath.toStdString()), imageWidget);
     });
 
     QObject::connect(ui->actionSaveFile, &QAction::triggered, [this, imageWidget]()
@@ -89,6 +86,49 @@ MainWindow::MainWindow(QWidget *parent)
         win->exec();
         win->deleteLater();
     });
+}
+
+void MainWindow::loadRecents(ImageWidget* imageWidget)
+{
+    auto lines = FileHelper::readLines(fs::current_path() / "recent.txt");
+    ui->menuRecent->clear();
+    for(const auto& line : lines)
+    {
+        QAction* action = new QAction(line);
+        QObject::connect(action, &QAction::triggered, [this, line, imageWidget]()
+        {
+            loadImageToWidget(fs::path(line.toStdString()), imageWidget);
+        });
+
+        ui->menuRecent->addAction(action);
+    }
+}
+
+void MainWindow::loadImageToWidget(const fs::path& filePath, ImageWidget* imageWidget)
+{
+    if (!filePath.empty()) {
+        qDebug() << "Selected file:" << filePath;
+        QImage image;
+        image.load(QString::fromStdString(filePath.generic_string()));
+
+        imageWidget->setImage(image);
+        ui->actionSaveFile->setEnabled(true);
+
+        auto lines = FileHelper::readLines(fs::current_path() / "recent.txt");
+
+        if(std::count(lines.begin(), lines.end(), QString::fromStdString(filePath.string())) > 0)
+        {
+            return;
+        }
+        else if(lines.size() == 5)
+        {
+            lines.pop_back();
+        }
+        lines.insert(lines.begin(), QString::fromStdString(filePath.string()));
+
+        FileHelper::saveLines(lines, fs::current_path() / "recent.txt");
+        loadRecents(imageWidget);
+    }
 }
 
 MainWindow::~MainWindow()

@@ -2,6 +2,9 @@
 #define MAINWINDOW_H
 
 #include <QMainWindow>
+#include <filesystem>
+#include "imagewidget.h"
+namespace fs = std::filesystem;
 
 QT_BEGIN_NAMESPACE
 namespace Ui {
@@ -19,6 +22,7 @@ public:
 
 private:
     Ui::MainWindow *ui;
-    QImage image;
+    void loadRecents(ImageWidget* imageWidget);
+    void loadImageToWidget(const fs::path& filePath, ImageWidget* imageWidget);
 };
 #endif // MAINWINDOW_H

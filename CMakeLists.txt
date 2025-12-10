@@ -76,6 +76,9 @@ add_custom_command(TARGET App POST_BUILD
     COMMAND ${CMAKE_COMMAND} -E copy_directory
             ${CMAKE_SOURCE_DIR}/fragmentshaders
             ${CMAKE_CURRENT_BINARY_DIR}/fragmentshaders
+
+    COMMAND ${CMAKE_COMMAND} -E touch
+                ${CMAKE_CURRENT_BINARY_DIR}/recent.txt
 )
 
 if(QT_VERSION_MAJOR EQUAL 6)

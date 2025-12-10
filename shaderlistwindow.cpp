@@ -49,7 +49,7 @@ void ShaderListWindow::modeBody(QOpenGLShader::ShaderType shaderType)
         if (!filePath.isEmpty()) {
             qDebug() << "Selected file:" << filePath;
             auto path = fs::path(filePath.toStdString());
-            auto contents = FileHelper::readFile(path);
+            auto contents = FileHelper::read(path);
 
             {
                 QOpenGLShaderProgram testProgram;
@@ -62,7 +62,7 @@ void ShaderListWindow::modeBody(QOpenGLShader::ShaderType shaderType)
                 testProgram.release();
             }
 
-            FileHelper::saveStringToFile(contents, fs::path(finalPath) / (FileHelper::getFileNameFromPath(path).toStdString() + ".txt"));
+            FileHelper::saveString(contents, fs::path(finalPath) / (FileHelper::getFileNameFromPath(path).toStdString() + ".txt"));
             this->m_shaderMap[FileHelper::getFileNameFromPath(path)] = contents;
             this->reloadView();
         }
@@ -123,7 +123,7 @@ void ShaderListWindow::modeBody(QOpenGLShader::ShaderType shaderType)
 
 
         auto path = fs::path(finalPath) / (newFileName.toStdString() + ".txt");
-        FileHelper::saveStringToFile((isFragment ? baseFragmentShaderSource : baseVertexShaderSource), path);
+        FileHelper::saveString((isFragment ? baseFragmentShaderSource : baseVertexShaderSource), path);
         this->m_shaderMap[newFileName] = "";
         this->reloadView();
     });
@@ -131,7 +131,7 @@ void ShaderListWindow::modeBody(QOpenGLShader::ShaderType shaderType)
     for(const auto& entry: fs::directory_iterator(fs::current_path() / finalPath))
     {
         auto fileName = FileHelper::getFileNameFromPath(entry.path());
-        m_shaderMap[fileName] = FileHelper::readFile(entry.path());
+        m_shaderMap[fileName] = FileHelper::read(entry.path());
     }
 }
 

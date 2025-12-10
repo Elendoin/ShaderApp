@@ -7,8 +7,10 @@
 class FileHelper
 {
 public:
-    static QString readFile(const std::filesystem::path& path);
-    static void saveStringToFile(const QString& contents, const std::filesystem::path& path);
+    static QString read(const std::filesystem::path& path);
+    static std::vector<QString> readLines(const std::filesystem::path& path);
+    static void saveString(const QString& contents, const std::filesystem::path& path);
+    static void saveLines(const std::vector<QString> lines, const std::filesystem::path& path);
     static QString getFileNameFromPath(const std::filesystem::path& path);
 };
 

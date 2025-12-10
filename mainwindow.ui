@@ -93,7 +93,7 @@
        <attribute name="title">
         <string>Color</string>
        </attribute>
-       <layout class="QHBoxLayout" name="horizontalLayout_3" stretch="">
+       <layout class="QHBoxLayout" name="horizontalLayout_3">
         <property name="spacing">
          <number>0</number>
         </property>
@@ -161,7 +161,13 @@
     <property name="title">
      <string>File</string>
     </property>
+    <widget class="QMenu" name="menuRecent">
+     <property name="title">
+      <string>Recent</string>
+     </property>
+    </widget>
     <addaction name="actionOpenFile"/>
+    <addaction name="menuRecent"/>
     <addaction name="actionSaveFile"/>
     <addaction name="separator"/>
     <addaction name="actionExit"/>
@@ -173,8 +179,16 @@
     <addaction name="actionCopy"/>
     <addaction name="actionPaste"/>
    </widget>
+   <widget class="QMenu" name="menuView">
+    <property name="title">
+     <string>View</string>
+    </property>
+    <addaction name="actionFilters"/>
+    <addaction name="actionInfo"/>
+   </widget>
    <addaction name="menuFile"/>
    <addaction name="menuEdit"/>
+   <addaction name="menuView"/>
   </widget>
   <widget class="QStatusBar" name="statusbar"/>
   <action name="actionOpenFile">
@@ -200,6 +214,21 @@
   <action name="actionPaste">
    <property name="text">
     <string>Paste</string>
+   </property>
+  </action>
+  <action name="actionMenu">
+   <property name="text">
+    <string>Menu</string>
+   </property>
+  </action>
+  <action name="actionFilters">
+   <property name="text">
+    <string>Filters</string>
+   </property>
+  </action>
+  <action name="actionInfo">
+   <property name="text">
+    <string>Image info</string>
    </property>
   </action>
  </widget>

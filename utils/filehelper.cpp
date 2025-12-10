@@ -2,7 +2,7 @@
 #include <qdir.h>
 
 
-QString FileHelper::readFile(const std::filesystem::path& path)
+QString FileHelper::read(const std::filesystem::path& path)
 {
     QFile file(path);
     if(!file.open(QIODevice::ReadOnly | QIODevice::Text))
@@ -15,7 +15,27 @@ QString FileHelper::readFile(const std::filesystem::path& path)
     return in.readAll();
 }
 
-void FileHelper::saveStringToFile(const QString& contents, const std::filesystem::path& path)
+std::vector<QString> FileHelper::readLines(const std::filesystem::path& path)
+{
+    std::vector<QString> lines;
+    QFile file(path);
+    if(!file.open(QIODevice::ReadOnly | QIODevice::Text))
+    {
+        qDebug() << "File couldn't open!" << path.generic_string() << Qt::endl;
+        throw std::runtime_error("File couldn't open: " + path.generic_string());
+    }
+
+    QTextStream in(&file);
+    while (!in.atEnd())
+    {
+        QString line = in.readLine();
+        lines.push_back(line);
+    }
+
+    return lines;
+}
+
+void FileHelper::saveString(const QString& contents, const std::filesystem::path& path)
 {
     QFile file(QString::fromStdString(path.string()));
     if(!file.open(QIODevice::WriteOnly | QIODevice::Text))
@@ -27,6 +47,17 @@ void FileHelper::saveStringToFile(const QString& contents, const std::filesystem
     QTextStream out(&file);
     out << contents;
     out.flush();
+}
+
+void FileHelper::saveLines(const std::vector<QString> lines, const std::filesystem::path& path)
+{
+    QString contents;
+    for(const auto& line : lines)
+    {
+        contents += line;
+        contents += "\n";
+    }
+    saveString(contents, path);
 }
 
 QString FileHelper::getFileNameFromPath(const std::filesystem::path& path)
