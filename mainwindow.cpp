@@ -1,12 +1,16 @@
 #include "mainwindow.h"
 #include "./ui_mainwindow.h"
 #include "utils/filehelper.h"
+#include "models/shadermodel.h"
 #include <QFileDialog>
 #include <QDebug>
 #include <QLayout>
 #include <shaderlistwindow.h>
 #include <QOpenGLShader>
 #include <QImageWriter>
+#include <QClipboard>
+#include <QGuiApplication>
+#include <QMessageBox>
 namespace fs = std::filesystem;
 
 MainWindow::MainWindow(QWidget *parent)
@@ -22,6 +26,7 @@ MainWindow::MainWindow(QWidget *parent)
     ui->actionSaveFile->setDisabled(true);
 
     loadRecents(imageWidget);
+    handleClipboard(imageWidget);
 
     QObject::connect(ui->actionOpenFile, &QAction::triggered, [this, imageWidget]()
     {
@@ -88,6 +93,41 @@ MainWindow::MainWindow(QWidget *parent)
     });
 }
 
+void MainWindow::resetShaderSelection(ImageWidget* imageWidget)
+{
+    ShaderModel model;
+    imageWidget->setFragmentShaderSource(model.getFragmentShaderSource());
+    imageWidget->setVertexShaderSource(model.getVertexShaderSource());
+}
+
+void MainWindow::handleClipboard(ImageWidget* imageWidget)
+{
+    QClipboard* clipboard = QGuiApplication::clipboard();
+
+    QObject::connect(ui->actionCopy, &QAction::triggered, [this, clipboard, imageWidget]()
+    {
+        auto size = imageWidget->getImage().size();
+        QImage image = imageWidget->renderToImage(size.width(), size.height());
+        clipboard->setImage(image);
+    });
+
+    QObject::connect(ui->actionPaste, &QAction::triggered, [this, clipboard, imageWidget]()
+    {
+        QImage image = clipboard->image();
+        if(!image.isNull())
+        {
+            imageWidget->setImage(image);
+            resetShaderSelection(imageWidget);
+        }
+        else
+        {
+            QMessageBox messageBox;
+            messageBox.critical(0,"Error","Couldn't paste content!");
+            return;
+        }
+    });
+}
+
 void MainWindow::loadRecents(ImageWidget* imageWidget)
 {
     auto lines = FileHelper::readLines(fs::current_path() / "recent.txt");
@@ -115,12 +155,13 @@ void MainWindow::loadImageToWidget(const fs::path& filePath, ImageWidget* imageW
         ui->actionSaveFile->setEnabled(true);
 
         auto lines = FileHelper::readLines(fs::current_path() / "recent.txt");
+        auto size = imageWidget->getImage().size();
 
         if(std::count(lines.begin(), lines.end(), QString::fromStdString(filePath.string())) > 0)
         {
             return;
         }
-        else if(lines.size() == 5)
+        else if(lines.size() == MAX_RECENTS)
         {
             lines.pop_back();
         }

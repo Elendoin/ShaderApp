@@ -16,12 +16,17 @@ class MainWindow : public QMainWindow
 {
     Q_OBJECT
 
+
+#define MAX_RECENTS 5
+
 public:
     MainWindow(QWidget *parent = nullptr);
     ~MainWindow();
 
 private:
     Ui::MainWindow *ui;
+    void resetShaderSelection(ImageWidget* imageWidget);
+    void handleClipboard(ImageWidget* imageWidget);
     void loadRecents(ImageWidget* imageWidget);
     void loadImageToWidget(const fs::path& filePath, ImageWidget* imageWidget);
 };
