@@ -32,6 +32,7 @@ if(${QT_VERSION_MAJOR} GREATER_EQUAL 6)
         shaderlistwindow.cpp
         utils/filehelper.h
         utils/filehelper.cpp
+        shaderselectitem.h shaderselectitem.cpp shaderselectitem.ui
 
 
     )
@@ -79,6 +80,17 @@ add_custom_command(TARGET App POST_BUILD
 
     COMMAND ${CMAKE_COMMAND} -E touch
                 ${CMAKE_CURRENT_BINARY_DIR}/recent.txt
+
+    COMMAND ${CMAKE_COMMAND} -E make_directory
+                ${CMAKE_CURRENT_BINARY_DIR}/color
+    COMMAND ${CMAKE_COMMAND} -E make_directory
+                ${CMAKE_CURRENT_BINARY_DIR}/lensAndDistortion
+    COMMAND ${CMAKE_COMMAND} -E make_directory
+                ${CMAKE_CURRENT_BINARY_DIR}/edgeDetection
+    COMMAND ${CMAKE_COMMAND} -E make_directory
+                ${CMAKE_CURRENT_BINARY_DIR}/tone
+    COMMAND ${CMAKE_COMMAND} -E make_directory
+                ${CMAKE_CURRENT_BINARY_DIR}/custom
 )
 
 if(QT_VERSION_MAJOR EQUAL 6)
