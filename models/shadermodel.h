@@ -10,12 +10,12 @@ public:
     QString getName() {return m_name;}
     QString getVertexShaderSource() {return m_vertexShaderSource;}
     QString getFragmentShaderSource() {return m_fragmentShaderSource;}
-    QImage getImage() {return m_image;}
+    QImage getIcon() {return m_icon;}
 
     void setName(const QString& name) {m_name = name;}
     void setVertexShaderSource(const QString& source) {m_vertexShaderSource = source;}
     void setFragmentShaderSource(const QString& source) {m_fragmentShaderSource = source;}
-    void setImage(const QImage& image) {m_image = image;}
+    void setIcon(const QImage& icon) {m_icon = icon;}
 
 private:
     QString m_name = "BaseShader";
@@ -40,7 +40,7 @@ void main() {
     fragColor = vec4(color.rgb, color.a);
 }
 )";
-    QImage m_image;
+    QImage m_icon;
 };
 
 

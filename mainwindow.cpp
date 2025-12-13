@@ -2,6 +2,7 @@
 #include "./ui_mainwindow.h"
 #include "utils/filehelper.h"
 #include "models/shadermodel.h"
+#include <shaderselectitem.h>
 #include <QFileDialog>
 #include <QDebug>
 #include <QLayout>
@@ -11,6 +12,7 @@
 #include <QClipboard>
 #include <QGuiApplication>
 #include <QMessageBox>
+
 namespace fs = std::filesystem;
 
 MainWindow::MainWindow(QWidget *parent)
@@ -150,6 +152,16 @@ void MainWindow::loadImageToWidget(const fs::path& filePath, ImageWidget* imageW
         qDebug() << "Selected file:" << filePath;
         QImage image;
         image.load(QString::fromStdString(filePath.generic_string()));
+
+        //test impl
+        ShaderModel model;
+        model.setName("Test model");
+        model.setIcon(image);
+
+        ShaderSelectItem* item = new ShaderSelectItem(model, ui->colorTab);
+        ui->scrollAreaWidgetContents->layout()->addWidget(item);
+        ui->scrollAreaWidgetContents->layout()->setAlignment(Qt::AlignLeft);
+        //ui->colorTab->layout()->setAlignment(Qt::AlignLeft);
 
         imageWidget->setImage(image);
         ui->actionSaveFile->setEnabled(true);
