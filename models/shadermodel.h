@@ -9,13 +9,15 @@ class ShaderModel
 public:
     QString getName() {return m_name;}
     QString getVertexShaderSource() {return m_vertexShaderSource;}
-    QString getFragmentShaderSource() {return m_fragmentShaderSource;}
+    QString getFragmentShaderSource() const {return m_fragmentShaderSource;}
     QImage getIcon() {return m_icon;}
+    QString getDocumentation() {return m_documentation;}
 
     void setName(const QString& name) {m_name = name;}
     void setVertexShaderSource(const QString& source) {m_vertexShaderSource = source;}
     void setFragmentShaderSource(const QString& source) {m_fragmentShaderSource = source;}
     void setIcon(const QImage& icon) {m_icon = icon;}
+    void setDocumentation(const QString& documentation) {m_documentation = documentation;}
 
 private:
     QString m_name = "BaseShader";
@@ -41,6 +43,7 @@ void main() {
 }
 )";
     QImage m_icon;
+    QString m_documentation;
 };
 
 

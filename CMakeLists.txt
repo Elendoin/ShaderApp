@@ -33,6 +33,7 @@ if(${QT_VERSION_MAJOR} GREATER_EQUAL 6)
         utils/filehelper.h
         utils/filehelper.cpp
         shaderselectitem.h shaderselectitem.cpp shaderselectitem.ui
+        utils/modeldeserializer.h utils/modeldeserializer.cpp
 
 
     )
@@ -62,35 +63,19 @@ set_target_properties(App PROPERTIES
 )
 
 add_custom_command(TARGET App POST_BUILD
-    # Clear old vertexshaders folder
-    COMMAND ${CMAKE_COMMAND} -E rm -rf
-            ${CMAKE_CURRENT_BINARY_DIR}/vertexshaders
-    # Copy fresh version
-    COMMAND ${CMAKE_COMMAND} -E copy_directory
-            ${CMAKE_SOURCE_DIR}/vertexshaders
-            ${CMAKE_CURRENT_BINARY_DIR}/vertexshaders
-
-    # Clear old fragmentshaders folder
-    COMMAND ${CMAKE_COMMAND} -E rm -rf
-            ${CMAKE_CURRENT_BINARY_DIR}/fragmentshaders
-    # Copy fresh version
-    COMMAND ${CMAKE_COMMAND} -E copy_directory
-            ${CMAKE_SOURCE_DIR}/fragmentshaders
-            ${CMAKE_CURRENT_BINARY_DIR}/fragmentshaders
-
     COMMAND ${CMAKE_COMMAND} -E touch
                 ${CMAKE_CURRENT_BINARY_DIR}/recent.txt
 
     COMMAND ${CMAKE_COMMAND} -E make_directory
-                ${CMAKE_CURRENT_BINARY_DIR}/color
+                ${CMAKE_CURRENT_BINARY_DIR}/shaderTabs/color
     COMMAND ${CMAKE_COMMAND} -E make_directory
-                ${CMAKE_CURRENT_BINARY_DIR}/lensAndDistortion
+                ${CMAKE_CURRENT_BINARY_DIR}/shaderTabs/lensAndDistortion
     COMMAND ${CMAKE_COMMAND} -E make_directory
-                ${CMAKE_CURRENT_BINARY_DIR}/edgeDetection
+                ${CMAKE_CURRENT_BINARY_DIR}/shaderTabs/edgeDetection
     COMMAND ${CMAKE_COMMAND} -E make_directory
-                ${CMAKE_CURRENT_BINARY_DIR}/tone
+                ${CMAKE_CURRENT_BINARY_DIR}/shaderTabs/tone
     COMMAND ${CMAKE_COMMAND} -E make_directory
-                ${CMAKE_CURRENT_BINARY_DIR}/custom
+                ${CMAKE_CURRENT_BINARY_DIR}/shaderTabs/custom
 )
 
 if(QT_VERSION_MAJOR EQUAL 6)

@@ -18,6 +18,13 @@ public:
     explicit ShaderSelectItem(ShaderModel model, QWidget *parent = nullptr);
     ~ShaderSelectItem();
 
+signals:
+    void clicked();
+
+protected:
+    void mousePressEvent(QMouseEvent *event) override;
+    void mouseReleaseEvent(QMouseEvent *event) override;
+
 private:
     Ui::shaderselectitem *ui;
     ShaderModel m_model;

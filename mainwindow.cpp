@@ -2,6 +2,7 @@
 #include "./ui_mainwindow.h"
 #include "utils/filehelper.h"
 #include "models/shadermodel.h"
+#include "utils/modeldeserializer.h"
 #include <shaderselectitem.h>
 #include <QFileDialog>
 #include <QDebug>
@@ -32,7 +33,7 @@ MainWindow::MainWindow(QWidget *parent)
 
     QObject::connect(ui->actionOpenFile, &QAction::triggered, [this, imageWidget]()
     {
-        auto filePath = QFileDialog::getOpenFileName(this,tr("Open image file"), "", tr("Image (*.jpg *.png, *jpeg);;Image (*jpg);;Image (*png)"));
+        auto filePath = QFileDialog::getOpenFileName(this,tr("Open image file"), "", tr("Image (*.jpg *.png *jpeg);;Image (*jpg);;Image (*png)"));
         loadImageToWidget(fs::path(filePath.toStdString()), imageWidget);
     });
 
@@ -54,45 +55,53 @@ MainWindow::MainWindow(QWidget *parent)
         exit(0);
     });
 
-    QObject::connect(ui->selectFragmentShaderButton, &QPushButton::clicked, [this, imageWidget]()
+    auto tabWidget = ui->tabWidget;
+    for(int i = 0; i < tabWidget->count(); i++)
     {
-        ShaderListWindow* win = new ShaderListWindow(QOpenGLShader::Fragment, this);
-        win->setWindowTitle("Fragment shader selection");
+        auto page = tabWidget->widget(i);
+        auto title = page->objectName();
+        loadShaderTab(title, imageWidget);
+    }
 
-        QObject::connect(win->getListWidget(), &QListWidget::itemDoubleClicked, [this, win, imageWidget](QListWidgetItem* item)
-        {
-            qDebug() << "Selected: " << item->text();
-            this->ui->fragmentShaderLabel->setText("Selected Fragment Shader: " + item->text());
-            auto map = win->getShaderMap();
+    // QObject::connect(ui->selectFragmentShaderButton, &QPushButton::clicked, [this, imageWidget]()
+    // {
+    //     ShaderListWindow* win = new ShaderListWindow(QOpenGLShader::Fragment, this);
+    //     win->setWindowTitle("Fragment shader selection");
 
-            imageWidget->setFragmentShaderSource(map[item->text()]);
-            win->accept();
-        });
+    //     QObject::connect(win->getListWidget(), &QListWidget::itemDoubleClicked, [this, win, imageWidget](QListWidgetItem* item)
+    //     {
+    //         qDebug() << "Selected: " << item->text();
+    //         this->ui->fragmentShaderLabel->setText("Selected Fragment Shader: " + item->text());
+    //         auto map = win->getShaderMap();
 
-        win->setWindowModality(Qt::WindowModal);
-        win->exec();
-        win->deleteLater();
-    });
+    //         imageWidget->setFragmentShaderSource(map[item->text()]);
+    //         win->accept();
+    //     });
 
-    QObject::connect(ui->selectVertexShaderButton, &QPushButton::clicked, [this, imageWidget]()
-    {
-        ShaderListWindow* win = new ShaderListWindow(QOpenGLShader::Vertex, this);
-        win->setWindowTitle("Vertex shader selection");
+    //     win->setWindowModality(Qt::WindowModal);
+    //     win->exec();
+    //     win->deleteLater();
+    // });
 
-        QObject::connect(win->getListWidget(), &QListWidget::itemDoubleClicked, [this, win, imageWidget](QListWidgetItem* item)
-        {
-            qDebug() << "Selected: " << item->text();
-            this->ui->vertexShaderLabel->setText("Selected Vertex Shader: " + item->text());
-            auto map = win->getShaderMap();
+    // QObject::connect(ui->selectVertexShaderButton, &QPushButton::clicked, [this, imageWidget]()
+    // {
+    //     ShaderListWindow* win = new ShaderListWindow(QOpenGLShader::Vertex, this);
+    //     win->setWindowTitle("Vertex shader selection");
 
-            imageWidget->setVertexShaderSource(map[item->text()]);
-            win->accept();
-        });
+    //     QObject::connect(win->getListWidget(), &QListWidget::itemDoubleClicked, [this, win, imageWidget](QListWidgetItem* item)
+    //     {
+    //         qDebug() << "Selected: " << item->text();
+    //         this->ui->vertexShaderLabel->setText("Selected Vertex Shader: " + item->text());
+    //         auto map = win->getShaderMap();
 
-        win->setWindowModality(Qt::WindowModal);
-        win->exec();
-        win->deleteLater();
-    });
+    //         imageWidget->setVertexShaderSource(map[item->text()]);
+    //         win->accept();
+    //     });
+
+    //     win->setWindowModality(Qt::WindowModal);
+    //     win->exec();
+    //     win->deleteLater();
+    // });
 }
 
 void MainWindow::resetShaderSelection(ImageWidget* imageWidget)
@@ -153,16 +162,6 @@ void MainWindow::loadImageToWidget(const fs::path& filePath, ImageWidget* imageW
         QImage image;
         image.load(QString::fromStdString(filePath.generic_string()));
 
-        //test impl
-        ShaderModel model;
-        model.setName("Test model");
-        model.setIcon(image);
-
-        ShaderSelectItem* item = new ShaderSelectItem(model, ui->colorTab);
-        ui->scrollAreaWidgetContents->layout()->addWidget(item);
-        ui->scrollAreaWidgetContents->layout()->setAlignment(Qt::AlignLeft);
-        //ui->colorTab->layout()->setAlignment(Qt::AlignLeft);
-
         imageWidget->setImage(image);
         ui->actionSaveFile->setEnabled(true);
 
@@ -181,6 +180,33 @@ void MainWindow::loadImageToWidget(const fs::path& filePath, ImageWidget* imageW
 
         FileHelper::saveLines(lines, fs::current_path() / "recent.txt");
         loadRecents(imageWidget);
+    }
+}
+
+void MainWindow::loadShaderTab(const QString& tabName, ImageWidget* imageWidget)
+{
+    auto path = fs::current_path() / "shaderTabs" / tabName.toStdString();
+    QImage defaultIcon;
+    defaultIcon.load(QString::fromStdString((fs::current_path()/"defaultIcon.png").string()));
+
+    for(auto entry : fs::directory_iterator(path))
+    {
+        if(!entry.is_directory())
+        {
+            continue;
+        }
+
+        auto model = ModelDeserializer::deserializeShaderModel(entry.path(), defaultIcon);
+
+        ShaderSelectItem* item = new ShaderSelectItem(model, ui->centralwidget->findChild<QWidget*>(tabName));
+        QObject::connect(item, &ShaderSelectItem::clicked, this, [model, imageWidget]()
+        {
+             imageWidget->setFragmentShaderSource(model.getFragmentShaderSource());
+        });
+
+        ui->scrollAreaWidgetContents->layout()->addWidget(item);
+        ui->scrollAreaWidgetContents->layout()->setAlignment(Qt::AlignLeft);
+        //ui->colorTab->layout()->setAlignment(Qt::AlignLeft);
     }
 }
 

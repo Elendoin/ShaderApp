@@ -29,5 +29,6 @@ private:
     void handleClipboard(ImageWidget* imageWidget);
     void loadRecents(ImageWidget* imageWidget);
     void loadImageToWidget(const fs::path& filePath, ImageWidget* imageWidget);
+    void loadShaderTab(const QString& tabName, ImageWidget* imageWidget);
 };
 #endif // MAINWINDOW_H
