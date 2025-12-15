@@ -56,6 +56,16 @@ MainWindow::MainWindow(QWidget *parent)
     });
 
     auto tabWidget = ui->tabWidget;
+    auto infoWidget = ui->imageInfo;
+    QObject::connect(ui->actionFilters, &QAction::triggered, [this, tabWidget]()
+    {
+        tabWidget->setVisible(!tabWidget->isVisible());
+    });
+    QObject::connect(ui->actionInfo, &QAction::triggered, [this, infoWidget]()
+    {
+        infoWidget->setVisible(!infoWidget->isVisible());
+    });
+
     for(int i = 0; i < tabWidget->count(); i++)
     {
         auto page = tabWidget->widget(i);
@@ -164,6 +174,10 @@ void MainWindow::loadImageToWidget(const fs::path& filePath, ImageWidget* imageW
 
         imageWidget->setImage(image);
         ui->actionSaveFile->setEnabled(true);
+        ui->actionCopy->setEnabled(true);
+
+        ui->imageSizeLabel->setText("Image size: (" + QString::number(image.width()) + "x" + QString::number(image.height()) +  ")");
+        ui->filenameLabel->setText("File name: " + FileHelper::getFileNameFromPath(filePath));
 
         auto lines = FileHelper::readLines(fs::current_path() / "recent.txt");
         auto size = imageWidget->getImage().size();

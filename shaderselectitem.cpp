@@ -2,6 +2,7 @@
 #include <ui_shaderselectitem.h>
 #include <QMouseEvent>
 #include <QStyle>
+#include <QMenu>
 
 ShaderSelectItem::ShaderSelectItem(ShaderModel model, QWidget *parent)
     : QWidget(parent)
@@ -30,14 +31,12 @@ ShaderSelectItem[pressed="true"] {
     background: palette(dark);
 }
 )");
-
-    qDebug() << metaObject()->className();
-    qDebug() << objectName();
 }
 
 void ShaderSelectItem::mousePressEvent(QMouseEvent *event)
 {
-    if (event->button() == Qt::LeftButton) {
+    if (event->button() == Qt::LeftButton)
+    {
         setProperty("pressed", true);
         style()->polish(this);
         update();
@@ -56,6 +55,15 @@ void ShaderSelectItem::mouseReleaseEvent(QMouseEvent *event)
             emit clicked();
     }
     QWidget::mouseReleaseEvent(event);
+}
+
+void ShaderSelectItem::contextMenuEvent(QContextMenuEvent *event)
+{
+    QMenu menu(this);
+
+    menu.addAction("Inspect");
+
+    menu.exec(event->globalPos());
 }
 
 
