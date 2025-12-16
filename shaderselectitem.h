@@ -15,8 +15,14 @@ class ShaderSelectItem : public QWidget
     Q_OBJECT
 
 public:
-    explicit ShaderSelectItem(ShaderModel model, QWidget *parent = nullptr);
+    enum EditMode
+    {
+        CUSTOM,
+        BUILTIN
+    };
+    explicit ShaderSelectItem(ShaderModel model, EditMode mode, QWidget *parent = nullptr);
     ~ShaderSelectItem();
+
 
 signals:
     void clicked();
@@ -29,6 +35,7 @@ protected:
 private:
     Ui::shaderselectitem *ui;
     ShaderModel m_model;
+    bool m_isCustom;
 };
 
 #endif // SHADERSELECTITEM_H

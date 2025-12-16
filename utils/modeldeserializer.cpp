@@ -6,6 +6,7 @@ ShaderModel ModelDeserializer::deserializeShaderModel(const fs::path& path, cons
 {
     ShaderModel model;
     model.setName(FileHelper::getFileNameFromPath(path));
+    model.setPath(path);
     bool sourceFound = false;
     bool iconFound = false;
 

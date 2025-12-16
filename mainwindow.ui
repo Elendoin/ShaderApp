@@ -93,7 +93,7 @@
           <property name="alignment">
            <set>Qt::AlignmentFlag::AlignLeading|Qt::AlignmentFlag::AlignLeft|Qt::AlignmentFlag::AlignVCenter</set>
           </property>
-          <widget class="QWidget" name="scrollAreaWidgetContents">
+          <widget class="QWidget" name="colorScrollAreaWidgetContents">
            <property name="geometry">
             <rect>
              <x>0</x>

@@ -1,13 +1,16 @@
 #include "shaderselectitem.h"
+#include "inspectwindow.h"
 #include <ui_shaderselectitem.h>
 #include <QMouseEvent>
 #include <QStyle>
 #include <QMenu>
+#include <QMainWindow>
 
-ShaderSelectItem::ShaderSelectItem(ShaderModel model, QWidget *parent)
+ShaderSelectItem::ShaderSelectItem(ShaderModel model, EditMode mode, QWidget *parent)
     : QWidget(parent)
     , ui(new Ui::shaderselectitem)
 {
+    m_isCustom = mode == EditMode::CUSTOM ? true : false;
     m_model = model;
     ui->setupUi(this);
 
@@ -61,7 +64,20 @@ void ShaderSelectItem::contextMenuEvent(QContextMenuEvent *event)
 {
     QMenu menu(this);
 
-    menu.addAction("Inspect");
+    auto model = m_model;
+    QObject::connect(menu.addAction("Inspect"), &QAction::triggered, [this, model]()
+    {
+
+        InspectWindow* win = new InspectWindow(model, nullptr);
+        win->setAttribute(Qt::WA_DeleteOnClose);
+        win->setWindowModality(Qt::WindowModal);
+        win->show();
+    });
+    menu.addSeparator();
+    menu.addAction("Edit");
+    menu.addAction("Remove");
+
+
 
     menu.exec(event->globalPos());
 }

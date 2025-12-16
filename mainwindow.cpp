@@ -212,14 +212,23 @@ void MainWindow::loadShaderTab(const QString& tabName, ImageWidget* imageWidget)
 
         auto model = ModelDeserializer::deserializeShaderModel(entry.path(), defaultIcon);
 
-        ShaderSelectItem* item = new ShaderSelectItem(model, ui->centralwidget->findChild<QWidget*>(tabName));
+        ShaderSelectItem::EditMode mode;
+        mode = tabName == "Custom" ? ShaderSelectItem::EditMode::CUSTOM : ShaderSelectItem::EditMode::BUILTIN;
+
+        ShaderSelectItem* item = new ShaderSelectItem(model, mode, ui->centralwidget->findChild<QWidget*>(tabName));
         QObject::connect(item, &ShaderSelectItem::clicked, this, [model, imageWidget]()
         {
              imageWidget->setFragmentShaderSource(model.getFragmentShaderSource());
         });
 
-        ui->scrollAreaWidgetContents->layout()->addWidget(item);
-        ui->scrollAreaWidgetContents->layout()->setAlignment(Qt::AlignLeft);
+        QWidget* tabPage = ui->tabWidget->findChild<QWidget*>(tabName);
+        if (tabPage) {
+            QWidget* widget = tabPage->findChild<QWidget*>(tabName + "ScrollAreaWidgetContents");
+            if (widget) {
+                widget->layout()->addWidget(item);
+                widget->layout()->setAlignment(Qt::AlignLeft);
+            }
+        }
         //ui->colorTab->layout()->setAlignment(Qt::AlignLeft);
     }
 }

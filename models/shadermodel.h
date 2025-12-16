@@ -3,6 +3,7 @@
 
 #include <QString>
 #include <QImage>
+#include <filesystem>
 
 class ShaderModel
 {
@@ -12,12 +13,14 @@ public:
     QString getFragmentShaderSource() const {return m_fragmentShaderSource;}
     QImage getIcon() {return m_icon;}
     QString getDocumentation() {return m_documentation;}
+    std::filesystem::path getPath() {return m_path;}
 
     void setName(const QString& name) {m_name = name;}
     void setVertexShaderSource(const QString& source) {m_vertexShaderSource = source;}
     void setFragmentShaderSource(const QString& source) {m_fragmentShaderSource = source;}
     void setIcon(const QImage& icon) {m_icon = icon;}
     void setDocumentation(const QString& documentation) {m_documentation = documentation;}
+    void setPath(const std::filesystem::path& path) {m_path = path;}
 
 private:
     QString m_name = "BaseShader";
@@ -44,6 +47,7 @@ void main() {
 )";
     QImage m_icon;
     QString m_documentation;
+    std::filesystem::path m_path;
 };
 
 
