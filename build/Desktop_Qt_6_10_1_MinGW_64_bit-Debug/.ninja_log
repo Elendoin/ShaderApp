@@ -1,0 +1,25 @@
+# ninja log v6
+100	2395	7880016000678844	CMakeFiles/App.dir/mainwindow.cpp.obj	f5ef5d877cae1753
+7	100	7880015999747399	App_autogen/timestamp	7835162632040f60
+7	100	7880015999747399	App_autogen/mocs_compilation.cpp	7835162632040f60
+5472	7273	7879974818526917	CMakeFiles/App.dir/App_autogen/mocs_compilation.cpp.obj	805fb67bc635b087
+106	1779	7880016000733955	CMakeFiles/App.dir/shaderselectitem.cpp.obj	2085e9887aab45fa
+7	100	7880015999747399	C:/Studia/Praca/ShaderApp/build/Desktop_Qt_6_10_1_MinGW_64_bit-Debug/App_autogen/timestamp	7835162632040f60
+5514	7422	7879892345737899	CMakeFiles/App.dir/main.cpp.obj	feeea24f986e2c3
+7	100	7880015999747399	C:/Studia/Praca/ShaderApp/build/Desktop_Qt_6_10_1_MinGW_64_bit-Debug/App_autogen/mocs_compilation.cpp	7835162632040f60
+100	1444	7879972110035332	CMakeFiles/App.dir/utils/filehelper.cpp.obj	aac73695cf9bd6c
+6562	9076	7879730347635149	CMakeFiles/App.dir/imagewidget.cpp.obj	91d73cac0f16a5dd
+103	2151	7880016000713893	CMakeFiles/App.dir/shaderlistwindow.cpp.obj	a5db7bbc1145e7ac
+2395	2862	7880016023628233	App.exe	edcb41fa4d6e60aa
+110	1478	7875607543720963	CMakeFiles/App.dir/utils/modeldeserializer.cpp.obj	f8c0717963c96332
+109	1796	7880016000763947	CMakeFiles/App.dir/inspectwindow.cpp.obj	57bc51c34af91512
+119	1523	7879963889175574	CMakeFiles/App.dir/utils/modelserialization.cpp.obj	daabbb7d810d704e
+7	94	7880024633319367	App_autogen/timestamp	7835162632040f60
+7	94	7880024633319367	App_autogen/mocs_compilation.cpp	7835162632040f60
+7	94	7880024633319367	C:/Studia/Praca/ShaderApp/build/Desktop_Qt_6_10_1_MinGW_64_bit-Debug/App_autogen/timestamp	7835162632040f60
+7	94	7880024633319367	C:/Studia/Praca/ShaderApp/build/Desktop_Qt_6_10_1_MinGW_64_bit-Debug/App_autogen/mocs_compilation.cpp	7835162632040f60
+100	1746	7880024634246290	CMakeFiles/App.dir/shaderselectitem.cpp.obj	2085e9887aab45fa
+102	1815	7880024634266923	CMakeFiles/App.dir/inspectwindow.cpp.obj	57bc51c34af91512
+97	2207	7880024634226293	CMakeFiles/App.dir/shaderlistwindow.cpp.obj	a5db7bbc1145e7ac
+95	2471	7880024634196302	CMakeFiles/App.dir/mainwindow.cpp.obj	f5ef5d877cae1753
+2471	2959	7880024657956059	App.exe	edcb41fa4d6e60aa

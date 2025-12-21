@@ -1,0 +1,18 @@
+#version 330 core
+
+in vec2 vTexCoord;
+out vec4 fragColor;
+
+uniform sampler2D textureSampler;
+
+void main()
+{
+    vec4 color = texture(textureSampler, vTexCoord);
+
+    vec3 sepia;
+    sepia.r = dot(color.rgb, vec3(0.393, 0.769, 0.189));
+    sepia.g = dot(color.rgb, vec3(0.349, 0.686, 0.168));
+    sepia.b = dot(color.rgb, vec3(0.272, 0.534, 0.131));
+
+    fragColor = vec4(sepia, color.a);
+}
