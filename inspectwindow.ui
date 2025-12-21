@@ -13,7 +13,7 @@
   <property name="windowTitle">
    <string>Form</string>
   </property>
-  <layout class="QVBoxLayout" name="verticalLayout" stretch="0,1,1">
+  <layout class="QVBoxLayout" name="verticalLayout" stretch="0,0,0,0,1">
    <item>
     <widget class="QWidget" name="horizontalDataLayout" native="true">
      <layout class="QHBoxLayout" name="horizontalLayout_5">
@@ -51,6 +51,9 @@
                <set>Qt::TextInteractionFlag::LinksAccessibleByMouse|Qt::TextInteractionFlag::TextSelectableByKeyboard|Qt::TextInteractionFlag::TextSelectableByMouse</set>
               </property>
              </widget>
+            </item>
+            <item>
+             <widget class="QLineEdit" name="nameEdit"/>
             </item>
            </layout>
           </widget>
@@ -116,6 +119,13 @@
     </widget>
    </item>
    <item>
+    <widget class="QLabel" name="sourceLabel">
+     <property name="text">
+      <string>Source:</string>
+     </property>
+    </widget>
+   </item>
+   <item>
     <widget class="QWidget" name="sourceWidget" native="true">
      <layout class="QHBoxLayout" name="horizontalLayout" stretch="10,0">
       <item>
@@ -126,7 +136,7 @@
        </widget>
       </item>
       <item alignment="Qt::AlignmentFlag::AlignTop">
-       <widget class="QWidget" name="widget" native="true">
+       <widget class="QWidget" name="sourceButtons" native="true">
         <property name="layoutDirection">
          <enum>Qt::LayoutDirection::LeftToRight</enum>
         </property>
@@ -164,6 +174,13 @@
     </widget>
    </item>
    <item>
+    <widget class="QLabel" name="documentationLabel">
+     <property name="text">
+      <string>Documentation:</string>
+     </property>
+    </widget>
+   </item>
+   <item>
     <widget class="QWidget" name="documentationWidget" native="true">
      <layout class="QHBoxLayout" name="horizontalLayout_2">
       <item>
@@ -174,7 +191,7 @@
        </widget>
       </item>
       <item alignment="Qt::AlignmentFlag::AlignTop">
-       <widget class="QWidget" name="widget_2" native="true">
+       <widget class="QWidget" name="documentationButtons" native="true">
         <layout class="QVBoxLayout" name="verticalLayout_3">
          <item>
           <widget class="QToolButton" name="expandDocumentationButton">

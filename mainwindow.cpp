@@ -65,12 +65,12 @@ MainWindow::MainWindow(QWidget *parent)
     {
         infoWidget->setVisible(!infoWidget->isVisible());
     });
-    QObject::connect(ui->actionReload, &QAction::triggered, [this, tabWidget, imageWidget]()
+    QObject::connect(ui->actionReload, &QAction::triggered, [this, imageWidget]()
     {
-        loadShaderTabs(tabWidget, imageWidget);
+        loadShaderTabs(imageWidget);
     });
 
-    loadShaderTabs(tabWidget, imageWidget);
+    loadShaderTabs(imageWidget);
 }
 
 void MainWindow::resetShaderSelection(ImageWidget* imageWidget)
@@ -178,6 +178,11 @@ void MainWindow::loadShaderTab(const QString& tabName, ImageWidget* imageWidget)
             imageWidget->setFragmentShaderSource(model.getFragmentShaderSource());
         });
 
+        QObject::connect(item, &ShaderSelectItem::refreshQueued, this, [this, imageWidget]()
+        {
+            loadShaderTabs(imageWidget);
+        });
+
         QWidget* tabPage = ui->tabWidget->findChild<QWidget*>(tabName);
         if (tabPage) {
             QWidget* widget = tabPage->findChild<QWidget*>(tabName + "ScrollAreaWidgetContents");
@@ -204,36 +209,44 @@ void MainWindow::loadShaderTab(const QString& tabName, ImageWidget* imageWidget)
         addModel.setIcon(modelImage);
 
         QWidget* parentWidget = ui->centralwidget->findChild<QWidget*>(tabName);
-        ShaderSelectItem* item = new ShaderSelectItem(addModel, mode, parentWidget);
-        item->getUi()->iconLabel->setFrameStyle(0);
-        item->getUi()->shaderNameLabel->hide();
+        ShaderSelectItem* addNewModelItem = new ShaderSelectItem(addModel, mode, parentWidget);
+        addNewModelItem->getUi()->iconLabel->setFrameStyle(0);
+        addNewModelItem->getUi()->shaderNameLabel->hide();
 
-        QObject::connect(item, &ShaderSelectItem::clicked, this, [this, addModel, contentWidget, parentWidget, defaultIcon]()
+        QObject::connect(addNewModelItem, &ShaderSelectItem::clicked, this, [this, imageWidget, tabName, defaultIcon]()
         {
             ShaderModel newModel;
             newModel.setIcon(defaultIcon);
-            QString name;
+            QString name = "NewModel";
+
+            name = FileHelper::findIncrementFileName(name, fs::current_path() / "shaderTabs" / tabName.toStdString());
+
+            auto newPath = fs::current_path() / "shaderTabs" / tabName.toStdString() / name.toStdString();
+            fs::create_directory(newPath);
+            newModel.setPath(newPath);
+            ModelSerialization::serializeShaderModel(newModel);
+            loadShaderTabs(imageWidget);
         });
 
         if (contentWidget)
         {
-            contentWidget->layout()->addWidget(item);
+            contentWidget->layout()->addWidget(addNewModelItem);
             contentWidget->layout()->setAlignment(Qt::AlignLeft);
         }
     }
 }
 
-void MainWindow::loadShaderTabs(QTabWidget* tabWidget, ImageWidget* imageWidget)
+void MainWindow::loadShaderTabs(ImageWidget* imageWidget)
 {
-    for(int i = 0; i < tabWidget->count(); i++)
+    for(int i = 0; i < ui->tabWidget->count(); i++)
     {
-        auto page = tabWidget->widget(i);
+        auto page = ui->tabWidget->widget(i);
         auto title = page->objectName();
         loadShaderTab(title, imageWidget);
     }
 }
 
-void clearShaderTab(QWidget* tabPage, QString tabName)
+void MainWindow::clearShaderTab(QWidget* tabPage, QString tabName)
 {
     if(tabPage)
     {

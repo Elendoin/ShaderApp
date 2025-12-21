@@ -28,6 +28,7 @@ public:
 
 signals:
     void clicked();
+    void refreshQueued();
 
 protected:
     void mousePressEvent(QMouseEvent *event) override;

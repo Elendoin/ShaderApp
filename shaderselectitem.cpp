@@ -1,10 +1,12 @@
 #include "shaderselectitem.h"
 #include "inspectwindow.h"
+#include "utils/filehelper.h"
 #include <ui_shaderselectitem.h>
 #include <QMouseEvent>
 #include <QStyle>
 #include <QMenu>
 #include <QMainWindow>
+#include <QMessageBox>
 
 ShaderSelectItem::ShaderSelectItem(ShaderModel model, EditMode mode, QWidget *parent)
     : QWidget(parent)
@@ -77,7 +79,7 @@ void ShaderSelectItem::contextMenuEvent(QContextMenuEvent *event)
 
     if(m_isCustom && m_model.getName() != "")
     {
-        QAction* editAction = new QAction("Edit");
+        QAction* editAction = new QAction("Inspect / Edit");
         QObject::connect(editAction, &QAction::triggered, [this]()
         {
             openInspectWindow(true);
@@ -85,6 +87,17 @@ void ShaderSelectItem::contextMenuEvent(QContextMenuEvent *event)
 
 
         QAction* removeAction = new QAction("Remove");
+        QObject::connect(removeAction, &QAction::triggered, [this]()
+        {
+            QMessageBox::StandardButton reply;
+            reply = QMessageBox::question(this, "Delete", "Are you sure you want to delete: \"" + m_model.getName() + "\"?",
+                                          QMessageBox::Yes|QMessageBox::No);
+            if (reply == QMessageBox::Yes)
+            {
+                FileHelper::deleteDirectory(m_model.getPath());
+                emit refreshQueued();
+            }
+        });
 
         menu.addAction(editAction);
         menu.addSeparator();

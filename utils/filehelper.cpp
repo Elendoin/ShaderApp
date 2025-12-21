@@ -1,5 +1,7 @@
 #include "filehelper.h"
 #include <qdir.h>
+#include <QRegularExpression>
+namespace fs = std::filesystem;
 
 
 QString FileHelper::read(const std::filesystem::path& path)
@@ -60,6 +62,11 @@ void FileHelper::saveLines(const std::vector<QString> lines, const std::filesyst
     saveString(contents, path);
 }
 
+void FileHelper::deleteDirectory(const std::filesystem::path& path)
+{
+    fs::remove_all(path);
+}
+
 QString FileHelper::getFileNameFromPath(const std::filesystem::path& path)
 {
     auto pathStr = path.string();
@@ -70,7 +77,38 @@ QString FileHelper::getFileNameFromPath(const std::filesystem::path& path)
     return QString::fromStdString(file_without_extension);
 }
 
-QString FileHelper::findIncrementFileName(const std::filesystem::path& path)
+QString FileHelper::findIncrementFileName(const QString& name,
+                                          const std::filesystem::path& path)
 {
-    auto name = getFileNameFromPath(path);
+    QDir dir(QString::fromStdString(path.string()));
+
+    QRegularExpression re(
+        QString("^%1(?:\\((\\d+)\\))?$")
+            .arg(QRegularExpression::escape(name)));
+
+    int maxIndex = -1;
+
+    for (const QString& file : dir.entryList(QDir::Dirs | QDir::NoDotAndDotDot | QDir::Files))
+    {
+        QFileInfo info(file);
+        const QString baseName = info.completeBaseName();
+
+        auto match = re.match(baseName);
+        if (!match.hasMatch())
+            continue;
+
+        if (match.captured(1).isEmpty())
+        {
+            maxIndex = qMax(maxIndex, 0);
+        }
+        else
+        {
+            maxIndex = qMax(maxIndex, match.captured(1).toInt());
+        }
+    }
+
+    if (maxIndex < 0)
+        return name;
+
+    return name + "(" + QString::number(maxIndex + 1) + ")";
 }

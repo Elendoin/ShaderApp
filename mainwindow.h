@@ -31,8 +31,8 @@ private:
     void loadRecents(ImageWidget* imageWidget);
     void loadImageToWidget(const fs::path& filePath, ImageWidget* imageWidget);
     void loadShaderTab(const QString& tabName, ImageWidget* imageWidget);
-    void loadShaderTabs(QTabWidget* tabWidget, ImageWidget* imageWidget);
-    void clearShaderTab(QWidget* tabPage, , QString tabName);
+    void loadShaderTabs(ImageWidget* imageWidget);
+    void clearShaderTab(QWidget* tabPage, QString tabName);
     void copyImage(QClipboard* clipboard, ImageWidget* imageWidget);
     void pasteImage(QClipboard* clipboard, ImageWidget* imageWidget);
 };
