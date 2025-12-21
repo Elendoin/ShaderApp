@@ -14,6 +14,8 @@ public:
     QImage getIcon() {return m_icon;}
     QString getDocumentation() {return m_documentation;}
     std::filesystem::path getPath() {return m_path;}
+    std::filesystem::path getSourcePath() {return m_sourcePath;}
+    std::filesystem::path getDocumentationPath() {return m_documentationPath;}
 
     void setName(const QString& name) {m_name = name;}
     void setVertexShaderSource(const QString& source) {m_vertexShaderSource = source;}
@@ -21,11 +23,12 @@ public:
     void setIcon(const QImage& icon) {m_icon = icon;}
     void setDocumentation(const QString& documentation) {m_documentation = documentation;}
     void setPath(const std::filesystem::path& path) {m_path = path;}
+    void setSourcePath(const std::filesystem::path& path) {m_sourcePath = path;}
+    void setDocumentationPath(const std::filesystem::path& path) {m_documentationPath = path;}
 
 private:
     QString m_name = "BaseShader";
-    QString m_vertexShaderSource = R"(
-#version 330 core
+    QString m_vertexShaderSource = R"(#version 330 core
 layout(location = 0) in vec2 position;
 layout(location = 1) in vec2 texCoord;
 uniform vec2 scale;
@@ -35,8 +38,7 @@ void main() {
     vTexCoord = texCoord;
 }
 )";
-    QString m_fragmentShaderSource = R"(
-#version 330 core
+    QString m_fragmentShaderSource = R"(#version 330 core
 in vec2 vTexCoord;
 out vec4 fragColor;
 uniform sampler2D textureSampler;
@@ -48,7 +50,8 @@ void main() {
     QImage m_icon;
     QString m_documentation;
     std::filesystem::path m_path;
+    std::filesystem::path m_sourcePath;
+    std::filesystem::path m_documentationPath;
 };
-
 
 #endif // SHADERMODEL_H

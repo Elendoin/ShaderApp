@@ -2,7 +2,7 @@
 #include "./ui_mainwindow.h"
 #include "utils/filehelper.h"
 #include "models/shadermodel.h"
-#include "utils/modeldeserializer.h"
+#include "utils/modelserialization.h"
 #include <shaderselectitem.h>
 #include <QFileDialog>
 #include <QDebug>
@@ -10,9 +10,9 @@
 #include <shaderlistwindow.h>
 #include <QOpenGLShader>
 #include <QImageWriter>
-#include <QClipboard>
 #include <QGuiApplication>
 #include <QMessageBox>
+#include <ui_shaderselectitem.h>
 
 namespace fs = std::filesystem;
 
@@ -65,53 +65,12 @@ MainWindow::MainWindow(QWidget *parent)
     {
         infoWidget->setVisible(!infoWidget->isVisible());
     });
-
-    for(int i = 0; i < tabWidget->count(); i++)
+    QObject::connect(ui->actionReload, &QAction::triggered, [this, tabWidget, imageWidget]()
     {
-        auto page = tabWidget->widget(i);
-        auto title = page->objectName();
-        loadShaderTab(title, imageWidget);
-    }
+        loadShaderTabs(tabWidget, imageWidget);
+    });
 
-    // QObject::connect(ui->selectFragmentShaderButton, &QPushButton::clicked, [this, imageWidget]()
-    // {
-    //     ShaderListWindow* win = new ShaderListWindow(QOpenGLShader::Fragment, this);
-    //     win->setWindowTitle("Fragment shader selection");
-
-    //     QObject::connect(win->getListWidget(), &QListWidget::itemDoubleClicked, [this, win, imageWidget](QListWidgetItem* item)
-    //     {
-    //         qDebug() << "Selected: " << item->text();
-    //         this->ui->fragmentShaderLabel->setText("Selected Fragment Shader: " + item->text());
-    //         auto map = win->getShaderMap();
-
-    //         imageWidget->setFragmentShaderSource(map[item->text()]);
-    //         win->accept();
-    //     });
-
-    //     win->setWindowModality(Qt::WindowModal);
-    //     win->exec();
-    //     win->deleteLater();
-    // });
-
-    // QObject::connect(ui->selectVertexShaderButton, &QPushButton::clicked, [this, imageWidget]()
-    // {
-    //     ShaderListWindow* win = new ShaderListWindow(QOpenGLShader::Vertex, this);
-    //     win->setWindowTitle("Vertex shader selection");
-
-    //     QObject::connect(win->getListWidget(), &QListWidget::itemDoubleClicked, [this, win, imageWidget](QListWidgetItem* item)
-    //     {
-    //         qDebug() << "Selected: " << item->text();
-    //         this->ui->vertexShaderLabel->setText("Selected Vertex Shader: " + item->text());
-    //         auto map = win->getShaderMap();
-
-    //         imageWidget->setVertexShaderSource(map[item->text()]);
-    //         win->accept();
-    //     });
-
-    //     win->setWindowModality(Qt::WindowModal);
-    //     win->exec();
-    //     win->deleteLater();
-    // });
+    loadShaderTabs(tabWidget, imageWidget);
 }
 
 void MainWindow::resetShaderSelection(ImageWidget* imageWidget)
@@ -127,25 +86,18 @@ void MainWindow::handleClipboard(ImageWidget* imageWidget)
 
     QObject::connect(ui->actionCopy, &QAction::triggered, [this, clipboard, imageWidget]()
     {
-        auto size = imageWidget->getImage().size();
-        QImage image = imageWidget->renderToImage(size.width(), size.height());
-        clipboard->setImage(image);
+        copyImage(clipboard, imageWidget);
     });
 
     QObject::connect(ui->actionPaste, &QAction::triggered, [this, clipboard, imageWidget]()
     {
-        QImage image = clipboard->image();
-        if(!image.isNull())
-        {
-            imageWidget->setImage(image);
-            resetShaderSelection(imageWidget);
-        }
-        else
-        {
-            QMessageBox messageBox;
-            messageBox.critical(0,"Error","Couldn't paste content!");
-            return;
-        }
+        pasteImage(clipboard, imageWidget);
+    });
+
+    QObject::connect(ui->applyButton, &QPushButton::clicked, [this, clipboard, imageWidget]()
+    {
+        copyImage(clipboard, imageWidget);
+        pasteImage(clipboard, imageWidget);
     });
 }
 
@@ -175,6 +127,7 @@ void MainWindow::loadImageToWidget(const fs::path& filePath, ImageWidget* imageW
         imageWidget->setImage(image);
         ui->actionSaveFile->setEnabled(true);
         ui->actionCopy->setEnabled(true);
+        ui->applyButton->setEnabled(true);
 
         ui->imageSizeLabel->setText("Image size: (" + QString::number(image.width()) + "x" + QString::number(image.height()) +  ")");
         ui->filenameLabel->setText("File name: " + FileHelper::getFileNameFromPath(filePath));
@@ -203,6 +156,13 @@ void MainWindow::loadShaderTab(const QString& tabName, ImageWidget* imageWidget)
     QImage defaultIcon;
     defaultIcon.load(QString::fromStdString((fs::current_path()/"defaultIcon.png").string()));
 
+    ShaderSelectItem::EditMode mode;
+    mode = tabName == "custom" ? ShaderSelectItem::EditMode::CUSTOM : ShaderSelectItem::EditMode::BUILTIN;
+
+    //CLEAR TAB PAGE
+    QWidget* tabPage = ui->tabWidget->findChild<QWidget*>(tabName);
+    clearShaderTab(tabPage, tabName);
+
     for(auto entry : fs::directory_iterator(path))
     {
         if(!entry.is_directory())
@@ -210,15 +170,12 @@ void MainWindow::loadShaderTab(const QString& tabName, ImageWidget* imageWidget)
             continue;
         }
 
-        auto model = ModelDeserializer::deserializeShaderModel(entry.path(), defaultIcon);
-
-        ShaderSelectItem::EditMode mode;
-        mode = tabName == "Custom" ? ShaderSelectItem::EditMode::CUSTOM : ShaderSelectItem::EditMode::BUILTIN;
+        auto model = ModelSerialization::deserializeShaderModel(entry.path(), defaultIcon);
 
         ShaderSelectItem* item = new ShaderSelectItem(model, mode, ui->centralwidget->findChild<QWidget*>(tabName));
         QObject::connect(item, &ShaderSelectItem::clicked, this, [model, imageWidget]()
         {
-             imageWidget->setFragmentShaderSource(model.getFragmentShaderSource());
+            imageWidget->setFragmentShaderSource(model.getFragmentShaderSource());
         });
 
         QWidget* tabPage = ui->tabWidget->findChild<QWidget*>(tabName);
@@ -229,7 +186,99 @@ void MainWindow::loadShaderTab(const QString& tabName, ImageWidget* imageWidget)
                 widget->layout()->setAlignment(Qt::AlignLeft);
             }
         }
-        //ui->colorTab->layout()->setAlignment(Qt::AlignLeft);
+    }
+
+    //ADD MODEL BUTTON
+    if(mode == ShaderSelectItem::EditMode::CUSTOM)
+    {
+        QWidget* contentWidget;
+        if (tabPage)
+        {
+            contentWidget = tabPage->findChild<QWidget*>(tabName + "ScrollAreaWidgetContents");
+        }
+
+        ShaderModel addModel;
+        QImage modelImage;
+        modelImage.load(QString::fromStdString((fs::current_path()/"plusIcon.png").string()));
+        addModel.setName("");
+        addModel.setIcon(modelImage);
+
+        QWidget* parentWidget = ui->centralwidget->findChild<QWidget*>(tabName);
+        ShaderSelectItem* item = new ShaderSelectItem(addModel, mode, parentWidget);
+        item->getUi()->iconLabel->setFrameStyle(0);
+        item->getUi()->shaderNameLabel->hide();
+
+        QObject::connect(item, &ShaderSelectItem::clicked, this, [this, addModel, contentWidget, parentWidget, defaultIcon]()
+        {
+            ShaderModel newModel;
+            newModel.setIcon(defaultIcon);
+            QString name;
+        });
+
+        if (contentWidget)
+        {
+            contentWidget->layout()->addWidget(item);
+            contentWidget->layout()->setAlignment(Qt::AlignLeft);
+        }
+    }
+}
+
+void MainWindow::loadShaderTabs(QTabWidget* tabWidget, ImageWidget* imageWidget)
+{
+    for(int i = 0; i < tabWidget->count(); i++)
+    {
+        auto page = tabWidget->widget(i);
+        auto title = page->objectName();
+        loadShaderTab(title, imageWidget);
+    }
+}
+
+void clearShaderTab(QWidget* tabPage, QString tabName)
+{
+    if(tabPage)
+    {
+        QWidget* contents = tabPage->findChild<QWidget*>(tabName + "ScrollAreaWidgetContents");
+        if (contents)
+        {
+            const auto children = contents->findChildren<QWidget*>(
+                QString(), Qt::FindDirectChildrenOnly);
+
+            for (QWidget* child : children)
+            {
+                child->deleteLater();
+            }
+
+            if (QLayout* layout = contents->layout())
+            {
+                while (QLayoutItem* item = layout->takeAt(0))
+                {
+                    delete item;
+                }
+            }
+        }
+    }
+}
+
+void MainWindow::copyImage(QClipboard* clipboard, ImageWidget* imageWidget)
+{
+    auto size = imageWidget->getImage().size();
+    QImage image = imageWidget->renderToImage(size.width(), size.height());
+    clipboard->setImage(image);
+}
+
+void MainWindow::pasteImage(QClipboard* clipboard, ImageWidget* imageWidget)
+{
+    QImage image = clipboard->image();
+    if(!image.isNull())
+    {
+        imageWidget->setImage(image);
+        resetShaderSelection(imageWidget);
+    }
+    else
+    {
+        QMessageBox messageBox;
+        messageBox.critical(0,"Error","Couldn't paste content!");
+        return;
     }
 }
 

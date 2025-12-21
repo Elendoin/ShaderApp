@@ -64,24 +64,43 @@ void ShaderSelectItem::contextMenuEvent(QContextMenuEvent *event)
 {
     QMenu menu(this);
 
-    auto model = m_model;
-    QObject::connect(menu.addAction("Inspect"), &QAction::triggered, [this, model]()
+    if(!m_isCustom)
     {
-
-        InspectWindow* win = new InspectWindow(model, nullptr);
-        win->setAttribute(Qt::WA_DeleteOnClose);
-        win->setWindowModality(Qt::WindowModal);
-        win->show();
-    });
-    menu.addSeparator();
-    menu.addAction("Edit");
-    menu.addAction("Remove");
+        QAction* inspectAction = new QAction("Inspect");
+        menu.addAction(inspectAction);
+        QObject::connect(inspectAction, &QAction::triggered, [this]()
+        {
+            openInspectWindow(false);
+        });
+    }
 
 
+    if(m_isCustom && m_model.getName() != "")
+    {
+        QAction* editAction = new QAction("Edit");
+        QObject::connect(editAction, &QAction::triggered, [this]()
+        {
+            openInspectWindow(true);
+        });
+
+
+        QAction* removeAction = new QAction("Remove");
+
+        menu.addAction(editAction);
+        menu.addSeparator();
+        menu.addAction(removeAction);
+    }
 
     menu.exec(event->globalPos());
 }
 
+void ShaderSelectItem::openInspectWindow(bool editable)
+{
+    InspectWindow* win = new InspectWindow(m_model, editable, nullptr);
+    win->setAttribute(Qt::WA_DeleteOnClose);
+    win->setWindowModality(Qt::WindowModal);
+    win->show();
+}
 
 ShaderSelectItem::~ShaderSelectItem()
 {

@@ -33,7 +33,7 @@ if(${QT_VERSION_MAJOR} GREATER_EQUAL 6)
         utils/filehelper.h
         utils/filehelper.cpp
         shaderselectitem.h shaderselectitem.cpp shaderselectitem.ui
-        utils/modeldeserializer.h utils/modeldeserializer.cpp
+        utils/modelserialization.h utils/modelserialization.cpp
         inspectwindow.h inspectwindow.cpp inspectwindow.ui
 
 

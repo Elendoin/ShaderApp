@@ -1,8 +1,30 @@
-#include "modeldeserializer.h"
+#include "modelserialization.h"
 #include "filehelper.h"
 #include <QDebug>
+namespace fs = std::filesystem;
 
-ShaderModel ModelDeserializer::deserializeShaderModel(const fs::path& path, const QImage& defaultIcon)
+void ModelSerialization::serializeShaderModel(ShaderModel model)
+{
+    if(!fs::exists(model.getPath()))
+    {
+        throw std::runtime_error("No path found in model: " + model.getName().toStdString());
+    }
+
+    auto sourcePath = fs::exists(model.getSourcePath()) ? model.getSourcePath().filename() : model.getPath() / "source.txt";
+    FileHelper::saveString(model.getFragmentShaderSource(), sourcePath);
+
+    if(!model.getDocumentation().isEmpty())
+    {
+        auto documentationPath = fs::exists(model.getDocumentationPath()) ? model.getDocumentationPath().filename() : model.getPath() / "documentation.md";
+        FileHelper::saveString(model.getDocumentation(), documentationPath);
+    }
+    if(!model.getIcon().isNull())
+    {
+        //TODO
+    }
+}
+
+ShaderModel ModelSerialization::deserializeShaderModel(const fs::path& path, const QImage& defaultIcon)
 {
     ShaderModel model;
     model.setName(FileHelper::getFileNameFromPath(path));
@@ -20,10 +42,12 @@ ShaderModel ModelDeserializer::deserializeShaderModel(const fs::path& path, cons
 
         if(path.extension() == ".md")
         {
+            model.setDocumentationPath(path);
             model.setDocumentation(FileHelper::read(path));
         }
         else if(!(path.string().find("source") == std::string::npos))
         {
+            model.setSourcePath(path);
             model.setFragmentShaderSource(FileHelper::read(path));
             sourceFound = true;
         }

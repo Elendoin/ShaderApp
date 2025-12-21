@@ -1,8 +1,0 @@
-#version 330 core
-in vec2 vTexCoord;
-out vec4 fragColor;
-uniform sampler2D textureSampler;
-void main() {
-    vec4 color = texture(textureSampler, vTexCoord);
-    fragColor = vec4(1 - color.rgb, color.a);
-}

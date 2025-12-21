@@ -1,15 +1,16 @@
-#ifndef MODELDESERIALIZER_H
-#define MODELDESERIALIZER_H
+#ifndef MODELDESERIALIZATIONH_H
+#define MODELDESERIALIZATIONH_H
 #include <filesystem>
 #include "../models/shadermodel.h"
 namespace fs = std::filesystem;
 
 #define ICON_SIZE 64
 
-class ModelDeserializer
+class ModelSerialization
 {
 public:
+    static void serializeShaderModel(ShaderModel model);
     static ShaderModel deserializeShaderModel(const fs::path& path, const QImage& defaultIcon);
 };
 
-#endif // MODELDESERIALIZER_H
+#endif // MODELDESERIALIZATIONH_H

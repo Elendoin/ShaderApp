@@ -22,6 +22,8 @@ public:
     };
     explicit ShaderSelectItem(ShaderModel model, EditMode mode, QWidget *parent = nullptr);
     ~ShaderSelectItem();
+    void openInspectWindow(bool editable);
+    Ui::shaderselectitem* getUi() {return ui;}
 
 
 signals:

@@ -13,7 +13,7 @@ class InspectWindow : public QWidget
     Q_OBJECT
 
 public:
-    explicit InspectWindow(ShaderModel model, QWidget *parent = nullptr);
+    explicit InspectWindow(ShaderModel& model, bool editable, QWidget *parent = nullptr);
     ~InspectWindow();
 
 private:
