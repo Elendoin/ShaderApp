@@ -7,7 +7,6 @@
 #include <QFileDialog>
 #include <QDebug>
 #include <QLayout>
-#include <shaderlistwindow.h>
 #include <QOpenGLShader>
 #include <QImageWriter>
 #include <QGuiApplication>

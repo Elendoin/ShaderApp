@@ -12,7 +12,6 @@ App_autogen/timestamp: \
 	C:/QtDev/6.10.1/mingw_64/include/QtCore/q20utility.h \
 	C:/QtDev/6.10.1/mingw_64/include/QtCore/q23type_traits.h \
 	C:/QtDev/6.10.1/mingw_64/include/QtCore/q23utility.h \
-	C:/QtDev/6.10.1/mingw_64/include/QtCore/qabstractitemmodel.h \
 	C:/QtDev/6.10.1/mingw_64/include/QtCore/qalgorithms.h \
 	C:/QtDev/6.10.1/mingw_64/include/QtCore/qalloc.h \
 	C:/QtDev/6.10.1/mingw_64/include/QtCore/qanystringview.h \
@@ -57,13 +56,11 @@ App_autogen/timestamp: \
 	C:/QtDev/6.10.1/mingw_64/include/QtCore/qhash.h \
 	C:/QtDev/6.10.1/mingw_64/include/QtCore/qhashfunctions.h \
 	C:/QtDev/6.10.1/mingw_64/include/QtCore/qiodevicebase.h \
-	C:/QtDev/6.10.1/mingw_64/include/QtCore/qitemselectionmodel.h \
 	C:/QtDev/6.10.1/mingw_64/include/QtCore/qiterable.h \
 	C:/QtDev/6.10.1/mingw_64/include/QtCore/qiterator.h \
 	C:/QtDev/6.10.1/mingw_64/include/QtCore/qlatin1stringview.h \
 	C:/QtDev/6.10.1/mingw_64/include/QtCore/qline.h \
 	C:/QtDev/6.10.1/mingw_64/include/QtCore/qlist.h \
-	C:/QtDev/6.10.1/mingw_64/include/QtCore/qlocale.h \
 	C:/QtDev/6.10.1/mingw_64/include/QtCore/qlogging.h \
 	C:/QtDev/6.10.1/mingw_64/include/QtCore/qmalloc.h \
 	C:/QtDev/6.10.1/mingw_64/include/QtCore/qmap.h \
@@ -85,7 +82,6 @@ App_autogen/timestamp: \
 	C:/QtDev/6.10.1/mingw_64/include/QtCore/qprocessordetection.h \
 	C:/QtDev/6.10.1/mingw_64/include/QtCore/qrect.h \
 	C:/QtDev/6.10.1/mingw_64/include/QtCore/qrefcount.h \
-	C:/QtDev/6.10.1/mingw_64/include/QtCore/qregularexpression.h \
 	C:/QtDev/6.10.1/mingw_64/include/QtCore/qscopedpointer.h \
 	C:/QtDev/6.10.1/mingw_64/include/QtCore/qscopeguard.h \
 	C:/QtDev/6.10.1/mingw_64/include/QtCore/qset.h \
@@ -174,7 +170,6 @@ App_autogen/timestamp: \
 	C:/QtDev/6.10.1/mingw_64/include/QtGui/qtguiexports.h \
 	C:/QtDev/6.10.1/mingw_64/include/QtGui/qtguiglobal.h \
 	C:/QtDev/6.10.1/mingw_64/include/QtGui/qtransform.h \
-	C:/QtDev/6.10.1/mingw_64/include/QtGui/qvalidator.h \
 	C:/QtDev/6.10.1/mingw_64/include/QtGui/qvector2d.h \
 	C:/QtDev/6.10.1/mingw_64/include/QtGui/qvector3d.h \
 	C:/QtDev/6.10.1/mingw_64/include/QtGui/qvector4d.h \
@@ -182,7 +177,6 @@ App_autogen/timestamp: \
 	C:/QtDev/6.10.1/mingw_64/include/QtGui/qwindowdefs.h \
 	C:/QtDev/6.10.1/mingw_64/include/QtGui/qwindowdefs_win.h \
 	C:/QtDev/6.10.1/mingw_64/include/QtOpenGL/QOpenGLBuffer \
-	C:/QtDev/6.10.1/mingw_64/include/QtOpenGL/QOpenGLShader \
 	C:/QtDev/6.10.1/mingw_64/include/QtOpenGL/QOpenGLShaderProgram \
 	C:/QtDev/6.10.1/mingw_64/include/QtOpenGL/QOpenGLTexture \
 	C:/QtDev/6.10.1/mingw_64/include/QtOpenGL/QOpenGLVertexArrayObject \
@@ -196,26 +190,10 @@ App_autogen/timestamp: \
 	C:/QtDev/6.10.1/mingw_64/include/QtOpenGLWidgets/qopenglwidget.h \
 	C:/QtDev/6.10.1/mingw_64/include/QtOpenGLWidgets/qtopenglwidgetsexports.h \
 	C:/QtDev/6.10.1/mingw_64/include/QtOpenGLWidgets/qtopenglwidgetsglobal.h \
-	C:/QtDev/6.10.1/mingw_64/include/QtWidgets/QDialog \
-	C:/QtDev/6.10.1/mingw_64/include/QtWidgets/QListWidget \
 	C:/QtDev/6.10.1/mingw_64/include/QtWidgets/QMainWindow \
 	C:/QtDev/6.10.1/mingw_64/include/QtWidgets/QWidget \
-	C:/QtDev/6.10.1/mingw_64/include/QtWidgets/qabstractitemdelegate.h \
-	C:/QtDev/6.10.1/mingw_64/include/QtWidgets/qabstractitemview.h \
-	C:/QtDev/6.10.1/mingw_64/include/QtWidgets/qabstractscrollarea.h \
-	C:/QtDev/6.10.1/mingw_64/include/QtWidgets/qabstractslider.h \
-	C:/QtDev/6.10.1/mingw_64/include/QtWidgets/qabstractspinbox.h \
-	C:/QtDev/6.10.1/mingw_64/include/QtWidgets/qdialog.h \
-	C:/QtDev/6.10.1/mingw_64/include/QtWidgets/qframe.h \
-	C:/QtDev/6.10.1/mingw_64/include/QtWidgets/qlistview.h \
-	C:/QtDev/6.10.1/mingw_64/include/QtWidgets/qlistwidget.h \
 	C:/QtDev/6.10.1/mingw_64/include/QtWidgets/qmainwindow.h \
-	C:/QtDev/6.10.1/mingw_64/include/QtWidgets/qrubberband.h \
 	C:/QtDev/6.10.1/mingw_64/include/QtWidgets/qsizepolicy.h \
-	C:/QtDev/6.10.1/mingw_64/include/QtWidgets/qslider.h \
-	C:/QtDev/6.10.1/mingw_64/include/QtWidgets/qstyle.h \
-	C:/QtDev/6.10.1/mingw_64/include/QtWidgets/qstyleoption.h \
-	C:/QtDev/6.10.1/mingw_64/include/QtWidgets/qtabbar.h \
 	C:/QtDev/6.10.1/mingw_64/include/QtWidgets/qtabwidget.h \
 	C:/QtDev/6.10.1/mingw_64/include/QtWidgets/qtwidgets-config.h \
 	C:/QtDev/6.10.1/mingw_64/include/QtWidgets/qtwidgetsexports.h \
@@ -674,8 +652,6 @@ App_autogen/timestamp: \
 	C:/Studia/Praca/ShaderApp/mainwindow.cpp \
 	C:/Studia/Praca/ShaderApp/mainwindow.h \
 	C:/Studia/Praca/ShaderApp/models/shadermodel.h \
-	C:/Studia/Praca/ShaderApp/shaderlistwindow.cpp \
-	C:/Studia/Praca/ShaderApp/shaderlistwindow.h \
 	C:/Studia/Praca/ShaderApp/shaderselectitem.cpp \
 	C:/Studia/Praca/ShaderApp/shaderselectitem.h \
 	C:/Studia/Praca/ShaderApp/utils/filehelper.cpp \
@@ -684,6 +660,5 @@ App_autogen/timestamp: \
 	C:/Studia/Praca/ShaderApp/utils/modelserialization.h \
 	C:/Studia/Praca/ShaderApp/inspectwindow.ui \
 	C:/Studia/Praca/ShaderApp/mainwindow.ui \
-	C:/Studia/Praca/ShaderApp/shaderlistwindow.ui \
 	C:/Studia/Praca/ShaderApp/shaderselectitem.ui \
 	C:/QtDev/Tools/CMake_64/bin/cmake.exe

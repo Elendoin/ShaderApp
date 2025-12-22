@@ -16,7 +16,6 @@ set(PROJECT_SOURCES
     mainwindow.cpp
     mainwindow.h
     mainwindow.ui
-    shaderlistwindow.ui
     imagewidget.cpp
     imagewidget.h
 )
@@ -27,9 +26,6 @@ if(${QT_VERSION_MAJOR} GREATER_EQUAL 6)
         MANUAL_FINALIZATION
         ${PROJECT_SOURCES}
         models/shadermodel.h
-
-
-
         utils/filehelper.h
         utils/filehelper.cpp
         shaderselectitem.h shaderselectitem.cpp shaderselectitem.ui

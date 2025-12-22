@@ -81,14 +81,6 @@ build CMakeFiles/App.dir/imagewidget.cpp.obj: CXX_COMPILER__App_unscanned_Debug 
   OBJECT_DIR = CMakeFiles\App.dir
   OBJECT_FILE_DIR = CMakeFiles\App.dir
 
-build CMakeFiles/App.dir/shaderlistwindow.cpp.obj: CXX_COMPILER__App_unscanned_Debug C$:/Studia/Praca/ShaderApp/shaderlistwindow.cpp || cmake_object_order_depends_target_App
-  DEFINES = -DMINGW_HAS_SECURE_API=1 -DQT_CORE_LIB -DQT_GUI_LIB -DQT_NEEDS_QMAIN -DQT_OPENGLWIDGETS_LIB -DQT_OPENGL_LIB -DQT_WIDGETS_LIB -DUNICODE -DWIN32 -DWIN64 -D_ENABLE_EXTENDED_ALIGNED_STORAGE -D_UNICODE -D_WIN64
-  DEP_FILE = CMakeFiles\App.dir\shaderlistwindow.cpp.obj.d
-  FLAGS = -DQT_QML_DEBUG -g -std=gnu++17 -fdiagnostics-color=always
-  INCLUDES = -IC:/Studia/Praca/ShaderApp/build/Desktop_Qt_6_10_1_MinGW_64_bit-Debug/App_autogen/include -IC:/Studia/Praca/ShaderApp -isystem C:/QtDev/6.10.1/mingw_64/include/QtCore -isystem C:/QtDev/6.10.1/mingw_64/include -isystem C:/QtDev/6.10.1/mingw_64/mkspecs/win32-g++ -isystem C:/QtDev/6.10.1/mingw_64/include/QtWidgets -isystem C:/QtDev/6.10.1/mingw_64/include/QtGui -isystem C:/QtDev/6.10.1/mingw_64/include/QtOpenGL -isystem C:/QtDev/6.10.1/mingw_64/include/QtOpenGLWidgets
-  OBJECT_DIR = CMakeFiles\App.dir
-  OBJECT_FILE_DIR = CMakeFiles\App.dir
-
 build CMakeFiles/App.dir/utils/filehelper.cpp.obj: CXX_COMPILER__App_unscanned_Debug C$:/Studia/Praca/ShaderApp/utils/filehelper.cpp || cmake_object_order_depends_target_App
   DEFINES = -DMINGW_HAS_SECURE_API=1 -DQT_CORE_LIB -DQT_GUI_LIB -DQT_NEEDS_QMAIN -DQT_OPENGLWIDGETS_LIB -DQT_OPENGL_LIB -DQT_WIDGETS_LIB -DUNICODE -DWIN32 -DWIN64 -D_ENABLE_EXTENDED_ALIGNED_STORAGE -D_UNICODE -D_WIN64
   DEP_FILE = CMakeFiles\App.dir\utils\filehelper.cpp.obj.d
@@ -129,7 +121,7 @@ build CMakeFiles/App.dir/inspectwindow.cpp.obj: CXX_COMPILER__App_unscanned_Debu
 #############################################
 # Link the executable App.exe
 
-build App.exe: CXX_EXECUTABLE_LINKER__App_Debug CMakeFiles/App.dir/App_autogen/mocs_compilation.cpp.obj CMakeFiles/App.dir/main.cpp.obj CMakeFiles/App.dir/mainwindow.cpp.obj CMakeFiles/App.dir/imagewidget.cpp.obj CMakeFiles/App.dir/shaderlistwindow.cpp.obj CMakeFiles/App.dir/utils/filehelper.cpp.obj CMakeFiles/App.dir/shaderselectitem.cpp.obj CMakeFiles/App.dir/utils/modelserialization.cpp.obj CMakeFiles/App.dir/inspectwindow.cpp.obj | C$:/QtDev/6.10.1/mingw_64/lib/libQt6OpenGLWidgets.a C$:/QtDev/6.10.1/mingw_64/lib/libQt6Widgets.a C$:/QtDev/6.10.1/mingw_64/lib/libQt6OpenGL.a C$:/QtDev/6.10.1/mingw_64/lib/libQt6Gui.a C$:/QtDev/6.10.1/mingw_64/lib/libQt6Core.a C$:/QtDev/6.10.1/mingw_64/lib/libQt6EntryPoint.a || App_autogen App_autogen_timestamp_deps
+build App.exe: CXX_EXECUTABLE_LINKER__App_Debug CMakeFiles/App.dir/App_autogen/mocs_compilation.cpp.obj CMakeFiles/App.dir/main.cpp.obj CMakeFiles/App.dir/mainwindow.cpp.obj CMakeFiles/App.dir/imagewidget.cpp.obj CMakeFiles/App.dir/utils/filehelper.cpp.obj CMakeFiles/App.dir/shaderselectitem.cpp.obj CMakeFiles/App.dir/utils/modelserialization.cpp.obj CMakeFiles/App.dir/inspectwindow.cpp.obj | C$:/QtDev/6.10.1/mingw_64/lib/libQt6OpenGLWidgets.a C$:/QtDev/6.10.1/mingw_64/lib/libQt6Widgets.a C$:/QtDev/6.10.1/mingw_64/lib/libQt6OpenGL.a C$:/QtDev/6.10.1/mingw_64/lib/libQt6Gui.a C$:/QtDev/6.10.1/mingw_64/lib/libQt6Core.a C$:/QtDev/6.10.1/mingw_64/lib/libQt6EntryPoint.a || App_autogen App_autogen_timestamp_deps
   FLAGS = -DQT_QML_DEBUG -g
   LINK_FLAGS = -mwindows
   LINK_LIBRARIES = C:/QtDev/6.10.1/mingw_64/lib/libQt6OpenGLWidgets.a  -lopengl32  C:/QtDev/6.10.1/mingw_64/lib/libQt6Widgets.a  C:/QtDev/6.10.1/mingw_64/lib/libQt6OpenGL.a  C:/QtDev/6.10.1/mingw_64/lib/libQt6Gui.a  C:/QtDev/6.10.1/mingw_64/lib/libQt6Core.a  -lmpr  -luserenv  -lmingw32  C:/QtDev/6.10.1/mingw_64/lib/libQt6EntryPoint.a  -lshell32  -ld3d11  -ldxgi  -ldxguid  -ld3d12  -lkernel32 -luser32 -lgdi32 -lwinspool -lshell32 -lole32 -loleaut32 -luuid -lcomdlg32 -ladvapi32
@@ -174,7 +166,7 @@ build App_autogen_timestamp_deps: phony
 #############################################
 # Utility command for App_autogen
 
-build App_autogen: phony CMakeFiles/App_autogen App_autogen/include/ui_mainwindow.h App_autogen/include/ui_shaderlistwindow.h App_autogen/include/ui_shaderselectitem.h App_autogen/include/ui_inspectwindow.h App_autogen/timestamp App_autogen/mocs_compilation.cpp App_autogen_timestamp_deps
+build App_autogen: phony CMakeFiles/App_autogen App_autogen/include/ui_mainwindow.h App_autogen/include/ui_shaderselectitem.h App_autogen/include/ui_inspectwindow.h App_autogen/timestamp App_autogen/mocs_compilation.cpp App_autogen_timestamp_deps
 
 
 #############################################
@@ -191,7 +183,7 @@ build App_autogen/timestamp App_autogen/mocs_compilation.cpp | ${cmake_ninja_wor
 #############################################
 # Phony custom command for CMakeFiles\App_autogen
 
-build CMakeFiles/App_autogen App_autogen/include/ui_mainwindow.h App_autogen/include/ui_shaderlistwindow.h App_autogen/include/ui_shaderselectitem.h App_autogen/include/ui_inspectwindow.h | ${cmake_ninja_workdir}CMakeFiles/App_autogen ${cmake_ninja_workdir}App_autogen/include/ui_mainwindow.h ${cmake_ninja_workdir}App_autogen/include/ui_shaderlistwindow.h ${cmake_ninja_workdir}App_autogen/include/ui_shaderselectitem.h ${cmake_ninja_workdir}App_autogen/include/ui_inspectwindow.h: phony App_autogen/timestamp || App_autogen_timestamp_deps
+build CMakeFiles/App_autogen App_autogen/include/ui_mainwindow.h App_autogen/include/ui_shaderselectitem.h App_autogen/include/ui_inspectwindow.h | ${cmake_ninja_workdir}CMakeFiles/App_autogen ${cmake_ninja_workdir}App_autogen/include/ui_mainwindow.h ${cmake_ninja_workdir}App_autogen/include/ui_shaderselectitem.h ${cmake_ninja_workdir}App_autogen/include/ui_inspectwindow.h: phony App_autogen/timestamp || App_autogen_timestamp_deps
 
 # =============================================================================
 # Target aliases.

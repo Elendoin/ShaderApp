@@ -2,5 +2,4 @@
 #include "EWIEGA46WW/moc_imagewidget.cpp"
 #include "EWIEGA46WW/moc_inspectwindow.cpp"
 #include "EWIEGA46WW/moc_mainwindow.cpp"
-#include "EWIEGA46WW/moc_shaderlistwindow.cpp"
 #include "EWIEGA46WW/moc_shaderselectitem.cpp"
