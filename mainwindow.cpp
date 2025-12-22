@@ -142,7 +142,6 @@ void MainWindow::loadRecents(ImageWidget* imageWidget)
 void MainWindow::loadImageToWidget(const fs::path& filePath, ImageWidget* imageWidget)
 {
     if (!filePath.empty()) {
-        qDebug() << "Selected file:" << filePath;
         QImage image;
         image.load(QString::fromStdString(filePath.generic_string()));
 

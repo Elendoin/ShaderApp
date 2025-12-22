@@ -1,5 +1,5 @@
+C:/Users/elend/Desktop/images.jpg
 C:/Users/elend/Desktop/defaultIcon.jpg
 C:/Users/elend/Desktop/iba4lotwcj6e1.jpeg
 C:/Users/elend/Desktop/zabawne/BINGO.png
 C:/Users/elend/Desktop/BINGO.png
-C:/Studia/Praca/ShaderApp/build/Desktop_Qt_6_10_1_MinGW_64_bit-Debug/defaultIcon.png

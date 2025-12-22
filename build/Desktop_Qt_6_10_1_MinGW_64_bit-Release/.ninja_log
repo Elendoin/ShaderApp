@@ -1,0 +1,14 @@
+# ninja log v6
+4	7546	7880818606071106	App_autogen/timestamp	40769da38c0539b1
+4	7546	7880818606071106	App_autogen/mocs_compilation.cpp	40769da38c0539b1
+4	7546	7880818606071106	C:/Studia/Praca/ShaderApp/build/Desktop_Qt_6_10_1_MinGW_64_bit-Release/App_autogen/timestamp	40769da38c0539b1
+4	7546	7880818606071106	C:/Studia/Praca/ShaderApp/build/Desktop_Qt_6_10_1_MinGW_64_bit-Release/App_autogen/mocs_compilation.cpp	40769da38c0539b1
+7552	9068	7880818606448447	CMakeFiles/App.dir/main.cpp.obj	54778dfb6a00304f
+7563	9103	7880818606558782	CMakeFiles/App.dir/utils/modelserialization.cpp.obj	2b437721d87ad0ff
+7561	9141	7880818606538729	CMakeFiles/App.dir/shaderselectitem.cpp.obj	e99748943aa0eb42
+7549	9167	7880818606423192	CMakeFiles/App.dir/App_autogen/mocs_compilation.cpp.obj	c4fb3c5ae4cb1b57
+7558	9181	7880818606508437	CMakeFiles/App.dir/utils/filehelper.cpp.obj	c137785f594c76de
+7556	9331	7880818606488444	CMakeFiles/App.dir/imagewidget.cpp.obj	9590f002733411e6
+7566	9379	7880818606588792	CMakeFiles/App.dir/inspectwindow.cpp.obj	d66b322aab850c4d
+7554	10163	7880818606468436	CMakeFiles/App.dir/mainwindow.cpp.obj	602fbfccca337569
+10164	10363	7880818632563401	App.exe	aa109683a8a37eec

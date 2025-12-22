@@ -1,0 +1,5 @@
+C:/Studia/Praca/ShaderApp/build/Desktop_Qt_6_10_1_MinGW_64_bit-Release/CMakeFiles/App.dir
+C:/Studia/Praca/ShaderApp/build/Desktop_Qt_6_10_1_MinGW_64_bit-Release/CMakeFiles/edit_cache.dir
+C:/Studia/Praca/ShaderApp/build/Desktop_Qt_6_10_1_MinGW_64_bit-Release/CMakeFiles/rebuild_cache.dir
+C:/Studia/Praca/ShaderApp/build/Desktop_Qt_6_10_1_MinGW_64_bit-Release/CMakeFiles/App_autogen_timestamp_deps.dir
+C:/Studia/Praca/ShaderApp/build/Desktop_Qt_6_10_1_MinGW_64_bit-Release/CMakeFiles/App_autogen.dir

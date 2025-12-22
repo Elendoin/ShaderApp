@@ -1,0 +1,33 @@
+#version 330 core
+
+in vec2 vTexCoord;
+out vec4 fragColor;
+
+uniform sampler2D textureSampler;
+
+void main()
+{
+    vec4 color = texture(textureSampler, vTexCoord);
+
+    // Hardcoded dot pattern parameters
+    float scale = 420.0;   // dot size
+    float angle = 0.5;    // rotation in radians (~57°)
+
+    // Rotate coordinates
+    float s = sin(angle);
+    float c = cos(angle);
+    vec2 coord = vTexCoord * scale;
+    vec2 rotated = vec2(
+        c * coord.x - s * coord.y,
+        s * coord.x + c * coord.y
+    );
+
+    // Dot pattern
+    float pattern = sin(rotated.x * 3.14159) * sin(rotated.y * 3.14159);
+    float gray = dot(color.rgb, vec3(0.299, 0.587, 0.114)); // luminance
+    float intensity = gray * 10.0;
+
+    float mask = step(0.5, pattern * intensity);
+
+    fragColor = vec4(vec3(mask), color.a);
+}
