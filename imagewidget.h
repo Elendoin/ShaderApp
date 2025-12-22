@@ -20,11 +20,17 @@ public:
     ~ImageWidget() = default;
 
     QImage getImage();
+    float getZoom() {return m_scaleMultiplier;}
+    QString getShaderName() {return m_shaderModel.getName();}
     void setImage(const QImage &image);
     void setVertexShaderSource(const QString& source);
-    void setFragmentShaderSource(const QString& source);
+    void setFragmentShaderSource(const ShaderModel source);
     QImage renderToImage(int width, int height);
     void resetTransform();
+
+signals:
+    void zoomChanged();
+    void shaderModelChanged();
 
 protected:
     void initializeGL() override;

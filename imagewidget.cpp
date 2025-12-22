@@ -10,14 +10,15 @@ QImage ImageWidget::getImage()
 
 void ImageWidget::setImage(const QImage &image)
 {
+
     m_image = image;
     update();
-    qDebug() << "Widget: (" << width() << ", " << height() << ")";
-    qDebug() << "Image: (" << image.width() << ", " << image.height() << ")";
-    qDebug() << "Scale: (" << (float)image.width()/width() << ", " << (float)image.height()/height() << ")";
-    qDebug() << "Vertex Shader Code: " << m_shaderModel.getVertexShaderSource();
-    qDebug() << "Fragment Shader Code: " << m_shaderModel.getFragmentShaderSource();
-    qDebug() << Qt::endl;
+    // qDebug() << "Widget: (" << width() << ", " << height() << ")";
+    // qDebug() << "Image: (" << image.width() << ", " << image.height() << ")";
+    // qDebug() << "Scale: (" << (float)image.width()/width() << ", " << (float)image.height()/height() << ")";
+    // qDebug() << "Vertex Shader Code: " << m_shaderModel.getVertexShaderSource();
+    // qDebug() << "Fragment Shader Code: " << m_shaderModel.getFragmentShaderSource();
+    // qDebug() << Qt::endl;
 }
 
 void ImageWidget::setVertexShaderSource(const QString& source)
@@ -27,11 +28,13 @@ void ImageWidget::setVertexShaderSource(const QString& source)
     setImage(m_image);
 }
 
-void ImageWidget::setFragmentShaderSource(const QString& source)
+void ImageWidget::setFragmentShaderSource(const ShaderModel source)
 {
-    m_shaderModel.setFragmentShaderSource(source);
+    m_shaderModel.setName(source.getName());
+    m_shaderModel.setFragmentShaderSource(source.getFragmentShaderSource());
     //TODO - change so it checks for context, also don't render shaders everytime
     setImage(m_image);
+    emit shaderModelChanged();
 }
 
 QImage ImageWidget::renderToImage(int width, int height)
@@ -178,6 +181,7 @@ void ImageWidget::resetTransform()
 {
     m_scaleMultiplier = 1.0f;
     m_offset = QPointF();
+    emit zoomChanged();
     update();
 }
 
@@ -209,8 +213,10 @@ void ImageWidget::wheelEvent(QWheelEvent* event)
     }
     else if(event->angleDelta().y() < 0)
     {
-        m_scaleMultiplier -= 0.05f;
+        if((m_scaleMultiplier - 0.05f) >= 0)
+            m_scaleMultiplier -= 0.05f;
     }
+    emit zoomChanged();
     update();
 
     event->accept();

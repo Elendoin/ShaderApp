@@ -8,7 +8,7 @@
 class ShaderModel
 {
 public:
-    QString getName() {return m_name;}
+    QString getName() const {return m_name;}
     QString getVertexShaderSource() {return m_vertexShaderSource;}
     QString getFragmentShaderSource() const {return m_fragmentShaderSource;}
     QImage getIcon() {return m_icon;}

@@ -36,7 +36,6 @@ MainWindow::MainWindow(QWidget *parent)
         auto filePath = QFileDialog::getOpenFileName(this,tr("Open image file"), "", tr("Image (*.jpg *.png *jpeg);;Image (*jpg);;Image (*png)"));
         loadImageToWidget(fs::path(filePath.toStdString()), imageWidget);
     });
-
     QObject::connect(ui->actionSaveFile, &QAction::triggered, [this, imageWidget]()
     {
         auto filePath = QFileDialog::getSaveFileName(this,tr("Open image file"), "", tr("JPG (*.jpg);;JPEG (*.jpeg);;PNG (*.png)"));
@@ -49,7 +48,6 @@ MainWindow::MainWindow(QWidget *parent)
             qWarning() << "Failed to save image!";
         }
     });
-
     QObject::connect(ui->actionExit, &QAction::triggered, [this, imageWidget]()
     {
         exit(0);
@@ -83,12 +81,23 @@ MainWindow::MainWindow(QWidget *parent)
     });
 
     loadShaderTabs(imageWidget);
+
+
+    ui->zoomLabel->setText("Zoom: " + QString::number(imageWidget->getZoom()*100.0f) + "%");
+    ui->currentShaderLabel->setText("Current shader: " + imageWidget->getShaderName());
+
+    QObject::connect(imageWidget, &ImageWidget::zoomChanged, [this, imageWidget](){
+        ui->zoomLabel->setText("Zoom: " + QString::number(std::round(imageWidget->getZoom()*100.0f)) + "%");
+    });
+    QObject::connect(imageWidget, &ImageWidget::shaderModelChanged, [this, imageWidget](){
+        ui->currentShaderLabel->setText("Current shader: " + imageWidget->getShaderName());
+    });
 }
 
 void MainWindow::resetShaderSelection(ImageWidget* imageWidget)
 {
     ShaderModel model;
-    imageWidget->setFragmentShaderSource(model.getFragmentShaderSource());
+    imageWidget->setFragmentShaderSource(model);
     imageWidget->setVertexShaderSource(model.getVertexShaderSource());
     imageWidget->resetTransform();
 }
@@ -193,7 +202,7 @@ void MainWindow::loadShaderTab(const QString& tabName, ImageWidget* imageWidget)
 
         QObject::connect(item, &ShaderSelectItem::clicked, this, [model, imageWidget]()
         {
-            imageWidget->setFragmentShaderSource(model.getFragmentShaderSource());
+            imageWidget->setFragmentShaderSource(model);
         });
 
         QObject::connect(item, &ShaderSelectItem::refreshQueued, this, [this, imageWidget]()
