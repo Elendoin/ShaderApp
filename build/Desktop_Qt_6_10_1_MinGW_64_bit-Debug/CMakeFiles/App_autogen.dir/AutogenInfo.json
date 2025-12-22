@@ -348,57 +348,7 @@
 	"CROSS_CONFIG" : false,
 	"DEP_FILE" : "C:/Studia/Praca/ShaderApp/build/Desktop_Qt_6_10_1_MinGW_64_bit-Debug/App_autogen/deps",
 	"DEP_FILE_RULE_NAME" : "App_autogen/timestamp",
-	"HEADERS" : 
-	[
-		[
-			"C:/Studia/Praca/ShaderApp/imagewidget.h",
-			"MU",
-			"EWIEGA46WW/moc_imagewidget.cpp",
-			null
-		],
-		[
-			"C:/Studia/Praca/ShaderApp/inspectwindow.h",
-			"MU",
-			"EWIEGA46WW/moc_inspectwindow.cpp",
-			null
-		],
-		[
-			"C:/Studia/Praca/ShaderApp/mainwindow.h",
-			"MU",
-			"EWIEGA46WW/moc_mainwindow.cpp",
-			null
-		],
-		[
-			"C:/Studia/Praca/ShaderApp/models/shadermodel.h",
-			"MU",
-			"IVK4DJNV27/moc_shadermodel.cpp",
-			null
-		],
-		[
-			"C:/Studia/Praca/ShaderApp/shaderlistwindow.h",
-			"MU",
-			"EWIEGA46WW/moc_shaderlistwindow.cpp",
-			null
-		],
-		[
-			"C:/Studia/Praca/ShaderApp/shaderselectitem.h",
-			"MU",
-			"EWIEGA46WW/moc_shaderselectitem.cpp",
-			null
-		],
-		[
-			"C:/Studia/Praca/ShaderApp/utils/filehelper.h",
-			"MU",
-			"7HEHEGDA3T/moc_filehelper.cpp",
-			null
-		],
-		[
-			"C:/Studia/Praca/ShaderApp/utils/modelserialization.h",
-			"MU",
-			"7HEHEGDA3T/moc_modelserialization.cpp",
-			null
-		]
-	],
+	"HEADERS" : [],
 	"HEADER_EXTENSIONS" : [ "h", "hh", "h++", "hm", "hpp", "hxx", "in", "txx" ],
 	"INCLUDE_DIR" : "C:/Studia/Praca/ShaderApp/build/Desktop_Qt_6_10_1_MinGW_64_bit-Debug/App_autogen/include",
 	"MOC_COMPILATION_FILE" : "C:/Studia/Praca/ShaderApp/build/Desktop_Qt_6_10_1_MinGW_64_bit-Debug/App_autogen/mocs_compilation.cpp",
@@ -473,17 +423,7 @@
 	"QT_VERSION_MAJOR" : 6,
 	"QT_VERSION_MINOR" : 10,
 	"SETTINGS_FILE" : "C:/Studia/Praca/ShaderApp/build/Desktop_Qt_6_10_1_MinGW_64_bit-Debug/CMakeFiles/App_autogen.dir/AutogenUsed.txt",
-	"SOURCES" : 
-	[
-		[ "C:/Studia/Praca/ShaderApp/imagewidget.cpp", "MU", null ],
-		[ "C:/Studia/Praca/ShaderApp/inspectwindow.cpp", "MU", null ],
-		[ "C:/Studia/Praca/ShaderApp/main.cpp", "MU", null ],
-		[ "C:/Studia/Praca/ShaderApp/mainwindow.cpp", "MU", null ],
-		[ "C:/Studia/Praca/ShaderApp/shaderlistwindow.cpp", "MU", null ],
-		[ "C:/Studia/Praca/ShaderApp/shaderselectitem.cpp", "MU", null ],
-		[ "C:/Studia/Praca/ShaderApp/utils/filehelper.cpp", "MU", null ],
-		[ "C:/Studia/Praca/ShaderApp/utils/modelserialization.cpp", "MU", null ]
-	],
+	"SOURCES" : [],
 	"UIC_OPTIONS" : [],
 	"UIC_SEARCH_PATHS" : [],
 	"UIC_SKIP" : [],

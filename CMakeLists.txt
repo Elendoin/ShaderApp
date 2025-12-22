@@ -27,9 +27,9 @@ if(${QT_VERSION_MAJOR} GREATER_EQUAL 6)
         MANUAL_FINALIZATION
         ${PROJECT_SOURCES}
         models/shadermodel.h
-        shaderlistwindow.ui
-        shaderlistwindow.h
-        shaderlistwindow.cpp
+
+
+
         utils/filehelper.h
         utils/filehelper.cpp
         shaderselectitem.h shaderselectitem.cpp shaderselectitem.ui
