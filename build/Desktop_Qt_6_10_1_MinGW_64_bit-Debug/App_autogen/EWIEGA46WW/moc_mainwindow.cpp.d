@@ -1,6 +1,8 @@
 C:/Studia/Praca/ShaderApp/build/Desktop_Qt_6_10_1_MinGW_64_bit-Debug/App_autogen/EWIEGA46WW/moc_mainwindow.cpp: C:/Studia/Praca/ShaderApp/mainwindow.h \
   C:/Studia/Praca/ShaderApp/build/Desktop_Qt_6_10_1_MinGW_64_bit-Debug/App_autogen/moc_predefs.h \
+  C:/QtDev/6.10.1/mingw_64/include/QtCore/QFileSystemWatcher \
   C:/QtDev/6.10.1/mingw_64/include/QtCore/QObject \
+  C:/QtDev/6.10.1/mingw_64/include/QtCore/QPointF \
   C:/QtDev/6.10.1/mingw_64/include/QtCore/QScopedPointer \
   C:/QtDev/6.10.1/mingw_64/include/QtCore/QString \
   C:/QtDev/6.10.1/mingw_64/include/QtCore/q17memory.h \
@@ -43,6 +45,7 @@ C:/Studia/Praca/ShaderApp/build/Desktop_Qt_6_10_1_MinGW_64_bit-Debug/App_autogen
   C:/QtDev/6.10.1/mingw_64/include/QtCore/qdebug.h \
   C:/QtDev/6.10.1/mingw_64/include/QtCore/qendian.h \
   C:/QtDev/6.10.1/mingw_64/include/QtCore/qexceptionhandling.h \
+  C:/QtDev/6.10.1/mingw_64/include/QtCore/qfilesystemwatcher.h \
   C:/QtDev/6.10.1/mingw_64/include/QtCore/qflags.h \
   C:/QtDev/6.10.1/mingw_64/include/QtCore/qfloat16.h \
   C:/QtDev/6.10.1/mingw_64/include/QtCore/qforeach.h \

@@ -4,6 +4,7 @@
 #include <QMainWindow>
 #include <filesystem>
 #include <QClipboard>
+#include <QFileSystemWatcher>
 #include "imagewidget.h"
 namespace fs = std::filesystem;
 
@@ -26,6 +27,7 @@ public:
 
 private:
     Ui::MainWindow *ui;
+    QFileSystemWatcher* m_watcher;
     void resetShaderSelection(ImageWidget* imageWidget);
     void handleClipboard(ImageWidget* imageWidget);
     void loadRecents(ImageWidget* imageWidget);

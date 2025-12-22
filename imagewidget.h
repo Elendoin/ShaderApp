@@ -9,6 +9,7 @@
 #include <QOpenGLVertexArrayObject>
 #include <QOpenGLBuffer>
 #include <models/shadermodel.h>
+#include <QPointF>
 
 
 class ImageWidget : public QOpenGLWidget, public QOpenGLFunctions
@@ -23,21 +24,29 @@ public:
     void setVertexShaderSource(const QString& source);
     void setFragmentShaderSource(const QString& source);
     QImage renderToImage(int width, int height);
+    void resetTransform();
 
 protected:
     void initializeGL() override;
     void paintGL() override;
     void resizeGL(int w, int h) override;
+    void mousePressEvent(QMouseEvent *event) override;
+    void mouseMoveEvent(QMouseEvent *event) override;
+    void wheelEvent(QWheelEvent* event) override;
 
 private:
     void updateShader();
+
+    float m_scaleMultiplier = 1.0f;
+    QPointF m_lastPos;
+    QPointF m_offset;
+
     std::unique_ptr<QOpenGLTexture> m_texture;
     QOpenGLShaderProgram m_program;
     QOpenGLVertexArrayObject m_vao;
     QOpenGLBuffer m_vbo;
     QImage m_image;
     ShaderModel m_shaderModel;
-
 };
 
 

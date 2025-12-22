@@ -2,6 +2,7 @@
 C:/Studia/Praca/ShaderApp/imagewidget.h
  mmc:Q_OBJECT
  mdp:C:/QtDev/6.10.1/mingw_64/include/QtCore/QObject
+ mdp:C:/QtDev/6.10.1/mingw_64/include/QtCore/QPointF
  mdp:C:/QtDev/6.10.1/mingw_64/include/QtCore/QScopedPointer
  mdp:C:/QtDev/6.10.1/mingw_64/include/QtCore/QString
  mdp:C:/QtDev/6.10.1/mingw_64/include/QtCore/q17memory.h
@@ -853,7 +854,9 @@ C:/Studia/Praca/ShaderApp/shaderlistwindow.h
  mdp:C:/Studia/Praca/ShaderApp/shaderlistwindow.h
 C:/Studia/Praca/ShaderApp/mainwindow.h
  mmc:Q_OBJECT
+ mdp:C:/QtDev/6.10.1/mingw_64/include/QtCore/QFileSystemWatcher
  mdp:C:/QtDev/6.10.1/mingw_64/include/QtCore/QObject
+ mdp:C:/QtDev/6.10.1/mingw_64/include/QtCore/QPointF
  mdp:C:/QtDev/6.10.1/mingw_64/include/QtCore/QScopedPointer
  mdp:C:/QtDev/6.10.1/mingw_64/include/QtCore/QString
  mdp:C:/QtDev/6.10.1/mingw_64/include/QtCore/q17memory.h
@@ -896,6 +899,7 @@ C:/Studia/Praca/ShaderApp/mainwindow.h
  mdp:C:/QtDev/6.10.1/mingw_64/include/QtCore/qdebug.h
  mdp:C:/QtDev/6.10.1/mingw_64/include/QtCore/qendian.h
  mdp:C:/QtDev/6.10.1/mingw_64/include/QtCore/qexceptionhandling.h
+ mdp:C:/QtDev/6.10.1/mingw_64/include/QtCore/qfilesystemwatcher.h
  mdp:C:/QtDev/6.10.1/mingw_64/include/QtCore/qflags.h
  mdp:C:/QtDev/6.10.1/mingw_64/include/QtCore/qfloat16.h
  mdp:C:/QtDev/6.10.1/mingw_64/include/QtCore/qforeach.h
@@ -1723,6 +1727,7 @@ C:/Studia/Praca/ShaderApp/shaderselectitem.cpp
 C:/Studia/Praca/ShaderApp/utils/modeldeserializer.cpp
 C:/Studia/Praca/ShaderApp/inspectwindow.h
  mmc:Q_OBJECT
+ mdp:C:/QtDev/6.10.1/mingw_64/include/QtCore/QFileSystemWatcher
  mdp:C:/QtDev/6.10.1/mingw_64/include/QtCore/QString
  mdp:C:/QtDev/6.10.1/mingw_64/include/QtCore/q17memory.h
  mdp:C:/QtDev/6.10.1/mingw_64/include/QtCore/q20functional.h
@@ -1764,6 +1769,7 @@ C:/Studia/Praca/ShaderApp/inspectwindow.h
  mdp:C:/QtDev/6.10.1/mingw_64/include/QtCore/qdebug.h
  mdp:C:/QtDev/6.10.1/mingw_64/include/QtCore/qendian.h
  mdp:C:/QtDev/6.10.1/mingw_64/include/QtCore/qexceptionhandling.h
+ mdp:C:/QtDev/6.10.1/mingw_64/include/QtCore/qfilesystemwatcher.h
  mdp:C:/QtDev/6.10.1/mingw_64/include/QtCore/qflags.h
  mdp:C:/QtDev/6.10.1/mingw_64/include/QtCore/qfloat16.h
  mdp:C:/QtDev/6.10.1/mingw_64/include/QtCore/qforeach.h

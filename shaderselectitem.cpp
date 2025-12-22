@@ -110,6 +110,11 @@ void ShaderSelectItem::contextMenuEvent(QContextMenuEvent *event)
 void ShaderSelectItem::openInspectWindow(bool editable)
 {
     InspectWindow* win = new InspectWindow(m_model, editable, nullptr);
+    QObject::connect(win, &InspectWindow::refreshQueued, this, [this]()
+    {
+        emit refreshQueued();
+    });
+    win->setWindowTitle("Inspect");
     win->setAttribute(Qt::WA_DeleteOnClose);
     win->setWindowModality(Qt::WindowModal);
     win->show();

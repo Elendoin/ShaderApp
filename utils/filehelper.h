@@ -14,6 +14,7 @@ public:
     static void deleteDirectory(const std::filesystem::path& path);
     static QString getFileNameFromPath(const std::filesystem::path& path);
     static QString findIncrementFileName(const QString& name, const std::filesystem::path& path);
+    static void windowsOpenFileAs(const std::filesystem::path& path);
 };
 
 

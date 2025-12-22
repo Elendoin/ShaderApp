@@ -152,7 +152,7 @@
           <property name="widgetResizable">
            <bool>true</bool>
           </property>
-          <widget class="QWidget" name="lensScrollAreaWidgetContents">
+          <widget class="QWidget" name="lensAndDistortionScrollAreaWidgetContents">
            <property name="geometry">
             <rect>
              <x>0</x>
@@ -208,7 +208,7 @@
           <property name="widgetResizable">
            <bool>true</bool>
           </property>
-          <widget class="QWidget" name="edgeScrollAreaWidgetContents">
+          <widget class="QWidget" name="edgeDetectionScrollAreaWidgetContents">
            <property name="geometry">
             <rect>
              <x>0</x>
@@ -528,6 +528,7 @@
     </property>
     <addaction name="actionCopy"/>
     <addaction name="actionPaste"/>
+    <addaction name="actionReset_Shaders"/>
     <addaction name="actionReload"/>
    </widget>
    <widget class="QMenu" name="menuView">
@@ -604,6 +605,11 @@
   <action name="actionReload">
    <property name="text">
     <string>Reload Shaders</string>
+   </property>
+  </action>
+  <action name="actionReset_Shaders">
+   <property name="text">
+    <string>Reset Shaders</string>
    </property>
   </action>
  </widget>

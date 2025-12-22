@@ -1,6 +1,7 @@
 #include "filehelper.h"
 #include <qdir.h>
 #include <QRegularExpression>
+#include <QProcess>
 namespace fs = std::filesystem;
 
 
@@ -111,4 +112,12 @@ QString FileHelper::findIncrementFileName(const QString& name,
         return name;
 
     return name + "(" + QString::number(maxIndex + 1) + ")";
+}
+
+void FileHelper::windowsOpenFileAs(const std::filesystem::path& path)
+{
+    QProcess::startDetached(
+        "rundll32.exe",
+        QStringList() << "shell32.dll,OpenAs_RunDLL" << QString::fromStdString(path.string())
+        );
 }

@@ -23,6 +23,7 @@ MainWindow::MainWindow(QWidget *parent)
     ui->setupUi(this);
     setMinimumSize(width(), height());
 
+    m_watcher = new QFileSystemWatcher(this);
     ImageWidget* imageWidget = new ImageWidget(this);
 
     ui->imageLayout->addWidget(imageWidget, 1);
@@ -69,6 +70,18 @@ MainWindow::MainWindow(QWidget *parent)
     {
         loadShaderTabs(imageWidget);
     });
+    QObject::connect(ui->actionReset_Shaders, &QAction::triggered, [this, imageWidget]()
+    {
+        resetShaderSelection(imageWidget);
+    });
+    QObject::connect(m_watcher, &QFileSystemWatcher::directoryChanged, this, [this, imageWidget]()
+    {
+        loadShaderTabs(imageWidget);
+    });
+    QObject::connect(m_watcher, &QFileSystemWatcher::fileChanged, this, [this, imageWidget]()
+    {
+        loadShaderTabs(imageWidget);
+    });
 
     loadShaderTabs(imageWidget);
 }
@@ -78,6 +91,7 @@ void MainWindow::resetShaderSelection(ImageWidget* imageWidget)
     ShaderModel model;
     imageWidget->setFragmentShaderSource(model.getFragmentShaderSource());
     imageWidget->setVertexShaderSource(model.getVertexShaderSource());
+    imageWidget->resetTransform();
 }
 
 void MainWindow::handleClipboard(ImageWidget* imageWidget)
@@ -154,7 +168,7 @@ void MainWindow::loadShaderTab(const QString& tabName, ImageWidget* imageWidget)
 {
     auto path = fs::current_path() / "shaderTabs" / tabName.toStdString();
     QImage defaultIcon;
-    defaultIcon.load(QString::fromStdString((fs::current_path()/"defaultIcon.png").string()));
+    defaultIcon.load(QString::fromStdString((fs::current_path()/"defaultIcon.jpg").string()));
 
     ShaderSelectItem::EditMode mode;
     mode = tabName == "custom" ? ShaderSelectItem::EditMode::CUSTOM : ShaderSelectItem::EditMode::BUILTIN;
@@ -173,6 +187,11 @@ void MainWindow::loadShaderTab(const QString& tabName, ImageWidget* imageWidget)
         auto model = ModelSerialization::deserializeShaderModel(entry.path(), defaultIcon);
 
         ShaderSelectItem* item = new ShaderSelectItem(model, mode, ui->centralwidget->findChild<QWidget*>(tabName));
+
+        m_watcher->addPath(QString::fromStdString(model.getPath().parent_path().string()));
+        m_watcher->addPath(QString::fromStdString(model.getSourcePath().string()));
+        m_watcher->addPath(QString::fromStdString(model.getDocumentationPath().string()));
+
         QObject::connect(item, &ShaderSelectItem::clicked, this, [model, imageWidget]()
         {
             imageWidget->setFragmentShaderSource(model.getFragmentShaderSource());
@@ -238,6 +257,8 @@ void MainWindow::loadShaderTab(const QString& tabName, ImageWidget* imageWidget)
 
 void MainWindow::loadShaderTabs(ImageWidget* imageWidget)
 {
+    m_watcher->removePaths(m_watcher->files());
+    m_watcher->removePaths(m_watcher->directories());
     for(int i = 0; i < ui->tabWidget->count(); i++)
     {
         auto page = ui->tabWidget->widget(i);

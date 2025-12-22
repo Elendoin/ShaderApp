@@ -1,21 +1,19 @@
 #include "inspectwindow.h"
 #include "ui_inspectwindow.h"
 #include <QMessageBox>
+#include <utils/modelserialization.h>
+#include <utils/filehelper.h>
 
 InspectWindow::InspectWindow(ShaderModel& model, bool editable, QWidget *parent)
     : QWidget(parent)
     , ui(new Ui::InspectWindow)
 {
     m_model = model;
+    m_watcher = new QFileSystemWatcher(this);
+    loadWatcher();
     ui->setupUi(this);
 
-    ui->nameEdit->setGeometry(ui->nameLabel->geometry());
-    ui->nameEdit->hide();
-
-    ui->nameLabel->setText(m_model.getName());
-    ui->pathLabel->setText(QString::fromStdString(m_model.getPath().string()));
-    ui->sourceTextEdit->setText(m_model.getFragmentShaderSource());
-    ui->documentationTextEdit->setMarkdown(m_model.getDocumentation());
+    loadContent();
 
     if(!editable)
     {
@@ -48,7 +46,16 @@ InspectWindow::InspectWindow(ShaderModel& model, bool editable, QWidget *parent)
                                       QMessageBox::Yes|QMessageBox::No);
         if (reply == QMessageBox::Yes)
         {
+            auto oldPath = m_model.getPath();
+            auto newPath = m_model.getPath().parent_path() / ui->nameEdit->text().toStdString();
 
+            std::filesystem::copy(m_model.getPath(), newPath);
+            m_model = ModelSerialization::deserializeShaderModel(newPath, m_model.getIcon());
+            fs::remove_all(oldPath);
+
+            loadContent();
+            loadWatcher();
+            emit refreshQueued();
         }
         else
         {
@@ -60,6 +67,22 @@ InspectWindow::InspectWindow(ShaderModel& model, bool editable, QWidget *parent)
         ui->nameLabel->setText(ui->nameEdit->text());
         ui->nameEdit->hide();
         ui->nameLabel->show();
+    });
+
+    QObject::connect(ui->editSourceButton, &QToolButton::clicked, [this]()
+    {
+        FileHelper::windowsOpenFileAs(m_model.getSourcePath());
+    });
+
+    QObject::connect(ui->editDocumentationButton, &QToolButton::clicked, [this]()
+    {
+        if(!fs::exists(m_model.getDocumentationPath()))
+        {
+            auto docPath = m_model.getPath() / "documentation.md";
+            FileHelper::saveString("", docPath);
+            m_model.setDocumentationPath(docPath);
+        }
+        FileHelper::windowsOpenFileAs(m_model.getDocumentationPath());
     });
 
     QObject::connect(ui->expandSourceButton, &QToolButton::clicked, [this, editable]()
@@ -88,8 +111,37 @@ InspectWindow::InspectWindow(ShaderModel& model, bool editable, QWidget *parent)
             ui->editSourceButton->hide();
             ui->editNameButton->hide();
         }
-
     });
+
+    QObject::connect(m_watcher, &QFileSystemWatcher::directoryChanged, this, [this]()
+    {
+        this->close();
+    });
+
+    QObject::connect(m_watcher, &QFileSystemWatcher::fileChanged, this, [this]()
+    {
+        auto model = ModelSerialization::deserializeShaderModel(m_model.getPath(), m_model.getIcon());
+        m_model = model;
+        loadContent();
+    });
+}
+
+void InspectWindow::loadContent()
+{
+    ui->nameEdit->setGeometry(ui->nameLabel->geometry());
+    ui->nameEdit->hide();
+
+    ui->nameLabel->setText(m_model.getName());
+    ui->pathLabel->setText(QString::fromStdString(m_model.getPath().string()));
+    ui->sourceTextEdit->setText(m_model.getFragmentShaderSource());
+    ui->documentationTextEdit->setMarkdown(m_model.getDocumentation());
+}
+
+void InspectWindow::loadWatcher()
+{
+    m_watcher->addPath(QString::fromStdString(m_model.getPath().parent_path().string()));
+    m_watcher->addPath(QString::fromStdString(m_model.getDocumentationPath().string()));
+    m_watcher->addPath(QString::fromStdString(m_model.getSourcePath().string()));
 }
 
 InspectWindow::~InspectWindow()

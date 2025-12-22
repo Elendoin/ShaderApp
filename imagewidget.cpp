@@ -1,5 +1,7 @@
 #include "imagewidget.h"
 #include <QOpenGLFramebufferObject>
+#include <QMessageBox>
+#include <QWheelEvent>
 
 QImage ImageWidget::getImage()
 {
@@ -108,12 +110,27 @@ void ImageWidget::resizeGL(int w, int h)
 void ImageWidget::updateShader()
 {
     m_program.removeAllShaders();
-    if(!m_program.addShaderFromSourceCode(QOpenGLShader::Vertex, m_shaderModel.getVertexShaderSource()))
-        qDebug() << "Error:" << m_program.log();
-    if(!m_program.addShaderFromSourceCode(QOpenGLShader::Fragment, m_shaderModel.getFragmentShaderSource()))
-        qDebug() << "Error:" << m_program.log();
-    if(!m_program.link())
-        qDebug() << "Error:" << m_program.log();
+    if (!m_program.addShaderFromSourceCode(
+            QOpenGLShader::Vertex,
+            m_shaderModel.getVertexShaderSource()))
+    {
+        QMessageBox::critical(this, "Vertex Shader Error", m_program.log());
+        return;
+    }
+
+    if (!m_program.addShaderFromSourceCode(
+            QOpenGLShader::Fragment,
+            m_shaderModel.getFragmentShaderSource()))
+    {
+        QMessageBox::critical(this, "Fragment Shader Error", m_program.log());
+        return;
+    }
+
+    if (!m_program.link())
+    {
+        QMessageBox::critical(this, "Shader Link Error", m_program.log());
+        return;
+    }
 }
 
 void ImageWidget::paintGL()
@@ -127,8 +144,19 @@ void ImageWidget::paintGL()
     if (!m_texture)
         return;
 
-    float widthScale = std::clamp((float)m_image.width()/width(), 0.0f, 1.0f);
-    float heightScale = std::clamp((float)m_image.height()/height(), 0.0f, 1.0f);
+    float widgetAspect = (float)width() / height();
+    float imageAspect  = (float)m_image.width() / m_image.height();
+
+    float scaleX = 1.0f;
+    float scaleY = 1.0f;
+
+    if (imageAspect > widgetAspect) {
+        scaleX = 1.0f;
+        scaleY = widgetAspect / imageAspect;
+    } else {
+        scaleX = imageAspect / widgetAspect;
+        scaleY = 1.0f;
+    }
 
     updateShader();
     // glEnable(GL_TEXTURE_2D);
@@ -136,17 +164,54 @@ void ImageWidget::paintGL()
     m_program.bind();
 
     m_program.setUniformValue("textureSampler", 0);
-    m_program.setUniformValue("scale", QVector2D(widthScale, heightScale));
+    m_program.setUniformValue("scale", QVector2D(scaleX * m_scaleMultiplier, scaleY * m_scaleMultiplier));
+    m_program.setUniformValue("offset", QVector2D(m_offset));
 
     m_vao.bind();
     glDrawArrays(GL_TRIANGLE_FAN, 0, 4);
     m_vao.release();
 
-    // glBegin(GL_QUADS);
-    // glTexCoord2f(0, 1); glVertex2f(-widthScale, -heightScale);
-    // glTexCoord2f(1, 1); glVertex2f(widthScale, -heightScale);
-    // glTexCoord2f(1, 0); glVertex2f(widthScale, heightScale);
-    // glTexCoord2f(0, 0); glVertex2f(-widthScale, heightScale);
-    // glEnd();
     m_texture->release();
+}
+
+void ImageWidget::resetTransform()
+{
+    m_scaleMultiplier = 1.0f;
+    m_offset = QPointF();
+    update();
+}
+
+void ImageWidget::mousePressEvent(QMouseEvent *event)
+{
+    if(event->button() == Qt::LeftButton)
+    {
+        m_lastPos = event->pos();
+    }
+}
+
+void ImageWidget::mouseMoveEvent(QMouseEvent *event)
+{
+    if(event->buttons() & Qt::LeftButton)
+    {
+        auto delta = event->position() - m_lastPos;
+        m_lastPos = event->position();
+
+        m_offset += QPointF(delta.x(), -delta.y()) * 0.005f;
+        update();
+    }
+}
+
+void ImageWidget::wheelEvent(QWheelEvent* event)
+{
+    if(event->angleDelta().y() > 0)
+    {
+        m_scaleMultiplier += 0.05f;
+    }
+    else if(event->angleDelta().y() < 0)
+    {
+        m_scaleMultiplier -= 0.05f;
+    }
+    update();
+
+    event->accept();
 }

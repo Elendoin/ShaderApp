@@ -32,9 +32,10 @@ private:
 layout(location = 0) in vec2 position;
 layout(location = 1) in vec2 texCoord;
 uniform vec2 scale;
+uniform vec2 offset;
 out vec2 vTexCoord;
 void main() {
-    gl_Position = vec4(position * scale, 0.0, 1.0);
+    gl_Position = vec4((position * scale) + offset, 0.0, 1.0);
     vTexCoord = texCoord;
 }
 )";
